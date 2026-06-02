@@ -30,18 +30,15 @@ HEADERS = {
 
 
 def find_latest_pdf_url() -> str:
-    """Scrape the Employment News homepage and return the URL of the latest weekly PDF."""
     resp = requests.get(BASE_URL, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "lxml")
 
-    # Employment News publishes PDFs with links containing "pdf" in href
     for a in soup.find_all("a", href=True):
         href: str = a["href"]
         if href.lower().endswith(".pdf"):
             return href if href.startswith("http") else BASE_URL.rstrip("/") + "/" + href.lstrip("/")
 
-    # Fallback: look for links to the e-paper / weekly issue page
     for a in soup.find_all("a", href=True, string=re.compile(r"(PDF|Download|Weekly)", re.I)):
         href = a["href"]
         return href if href.startswith("http") else BASE_URL.rstrip("/") + "/" + href.lstrip("/")
@@ -63,7 +60,6 @@ def download_pdf(url: str) -> bytes:
 
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
-    """Return all text extracted from the PDF using pdfplumber."""
     text_parts: list[str] = []
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
         total = len(pdf.pages)
@@ -77,11 +73,70 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     return "\n\n".join(text_parts)
 
 
-def extract_jobs_with_claude(text: str, source_url: str) -> list[dict]:
-    """Send the extracted text to Claude and return a list of structured job dicts."""
-    client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
+def fix_vacancies(jobs: list[dict]) -> list[dict]:
+    """
+    Second pass: for jobs where vacancies is null, attempt to extract
+    the count from notes/title patterns. If still null, set
+    vacancies_display to 'See notification'.
+    """
+    for job in jobs:
+        if job.get("vacancies") is not None:
+            job["vacancies_display"] = str(job["vacancies"])
+            continue
 
-    # Trim to ~120 k chars to stay within a single request comfortably
+        title = job.get("job_title") or ""
+        notes = job.get("notes") or ""
+        combined = title + " " + notes
+        extracted = None
+
+        # Pattern 1: category breakdown UR-04, OBC-01, SC-01 … → sum all numbers
+        cats = re.findall(
+            r'\b(?:UR|EWS|OBC|SC|ST|PwBD|OH|VH|HH|Gen|General)\s*[-–]\s*(\d+)',
+            combined, re.I
+        )
+        if cats:
+            extracted = sum(int(c) for c in cats)
+
+        # Pattern 2: "x2", "x4" in title (e.g. "Member (Technical) x2")
+        if extracted is None:
+            m = re.search(r'\bx\s*(\d+)\b', title, re.I)
+            if m:
+                extracted = int(m.group(1))
+
+        # Pattern 3: "17 posts", "9 posts" anywhere
+        if extracted is None:
+            m = re.search(r'\b(\d+)\s+posts?\b', combined, re.I)
+            if m:
+                n = int(m.group(1))
+                if 1 <= n <= 1000:
+                    extracted = n
+
+        # Pattern 4: "(\d+) vacancies" anywhere
+        if extracted is None:
+            m = re.search(r'\b(\d+)\s+vacanc', combined, re.I)
+            if m:
+                extracted = int(m.group(1))
+
+        # Pattern 5: "(\d+) positions" in notes
+        if extracted is None:
+            m = re.search(r'\b(\d+)\s+positions?\b', notes, re.I)
+            if m:
+                n = int(m.group(1))
+                if 1 <= n <= 1000:
+                    extracted = n
+
+        if extracted is not None:
+            job["vacancies"] = extracted
+            job["vacancies_display"] = str(extracted)
+        else:
+            job["vacancies_display"] = "See notification"
+
+    return jobs
+
+
+def extract_jobs_with_claude(text: str, source_url: str) -> list[dict]:
+    client = anthropic.Anthropic()
+
     MAX_CHARS = 120_000
     if len(text) > MAX_CHARS:
         print(f"Text truncated from {len(text):,} to {MAX_CHARS:,} chars for API call.")
@@ -92,8 +147,10 @@ def extract_jobs_with_claude(text: str, source_url: str) -> list[dict]:
         "Extract every distinct job/recruitment advertisement from the provided text and return ONLY a valid "
         "JSON array (no markdown fences, no prose). Each element must have exactly these keys:\n"
         "  job_title, organization, vacancies, qualification, age_limit, "
-        "application_deadline, location, source_url\n"
+        "application_deadline, location, notes\n"
         "Use null for any field that is not mentioned. vacancies must be an integer or null. "
+        "In the notes field include: salary/pay level, category breakdown (UR/OBC/SC/ST counts), "
+        "application instructions, important dates, and any URLs mentioned. "
         "Dates should be ISO-8601 (YYYY-MM-DD) where possible, otherwise a human-readable string."
     )
 
@@ -114,14 +171,12 @@ def extract_jobs_with_claude(text: str, source_url: str) -> list[dict]:
     ) as stream:
         message = stream.get_final_message()
 
-    # Extract the text block from the response
     raw = ""
     for block in message.content:
         if block.type == "text":
             raw = block.text.strip()
             break
 
-    # Strip any accidental markdown fences
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
     raw = re.sub(r"\s*```$", "", raw)
 
@@ -158,14 +213,19 @@ def main() -> None:
     print(f"Extracted ~{len(text):,} characters of text.")
 
     jobs = extract_jobs_with_claude(text, pdf_url)
+
+    print("Running vacancy fix-up pass…")
+    jobs = fix_vacancies(jobs)
+
+    fixed = sum(1 for j in jobs if j.get("vacancies_display") not in (None, "See notification") and j.get("vacancies") is not None)
+    see_notif = sum(1 for j in jobs if j.get("vacancies_display") == "See notification")
+    print(f"  Vacancies resolved: {fixed} | 'See notification': {see_notif}")
+
     save_output(jobs, pdf_url)
 
     print(f"\nSummary: found {len(jobs)} job listing(s).")
     for job in jobs[:5]:
-        title = job.get("job_title") or "—"
-        org = job.get("organization") or "—"
-        vac = job.get("vacancies")
-        print(f"  • {title} | {org} | vacancies: {vac}")
+        print(f"  • {job.get('job_title', '—')[:55]} | vacancies: {job.get('vacancies_display', '—')}")
     if len(jobs) > 5:
         print(f"  … and {len(jobs) - 5} more.")
 

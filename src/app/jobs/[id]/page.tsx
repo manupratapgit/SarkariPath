@@ -103,7 +103,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatBox label="Vacancies" value={job.vacancies ? job.vacancies.toLocaleString("en-IN") : "—"} icon="👥" />
+              <StatBox label="Vacancies" value={job.vacancies_display || (job.vacancies ? job.vacancies.toLocaleString("en-IN") : "See notification")} icon="👥" />
               <StatBox label="Location" value={job.location || "—"} icon="📍" />
               <StatBox label="Age Limit" value={ageLimit || "—"} icon="🎂" />
               <StatBox
@@ -135,7 +135,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
             <div className="space-y-5">
               <DetailRow label="Eligibility / Qualification" value={qualification} />
               <DetailRow label="Age Limit" value={ageLimit} />
-              <DetailRow label="Number of Vacancies" value={job.vacancies ? String(job.vacancies) : undefined} />
+              <DetailRow label="Number of Vacancies" value={job.vacancies_display || (job.vacancies ? String(job.vacancies) : "See notification")} />
               <DetailRow label="Application Deadline" value={deadline} />
               <DetailRow label="Location / Posting" value={job.location} />
             </div>

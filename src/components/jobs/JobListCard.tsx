@@ -10,6 +10,7 @@ export interface JobListItem {
   category: string;
   examType: string;
   vacancies: number;
+  vacanciesDisplay?: string;
   eligibility: string;
   lastDate: string;
   aiSummary: string;
@@ -81,10 +82,19 @@ export default function JobListCard({ job }: { job: JobListItem }) {
 
           {/* Vacancies */}
           <div className="text-right shrink-0">
-            <p className="text-2xl font-extrabold text-gray-900 leading-none">
-              {job.vacancies.toLocaleString("en-IN")}
-            </p>
-            <p className="text-xs text-gray-400 mt-0.5">vacancies</p>
+            {job.vacanciesDisplay === "See notification" ? (
+              <>
+                <p className="text-xs font-semibold text-orange-500 leading-none">See</p>
+                <p className="text-xs font-semibold text-orange-500">notification</p>
+              </>
+            ) : (
+              <>
+                <p className="text-2xl font-extrabold text-gray-900 leading-none">
+                  {(job.vacanciesDisplay || job.vacancies?.toLocaleString("en-IN") || "—")}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">vacancies</p>
+              </>
+            )}
           </div>
         </div>
 

@@ -225,6 +225,7 @@ def transform(raw: dict, idx: int) -> dict:
         "age_limit": (raw.get("age_limit") or "")[:100],
         "source": "Employment News 23-29 May 2026",
         "details": details,
+        "vacancies_display": raw.get("vacancies_display") or ("See notification" if raw.get("vacancies") is None else str(raw.get("vacancies"))),
     }
 
 

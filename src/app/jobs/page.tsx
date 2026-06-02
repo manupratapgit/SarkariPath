@@ -28,6 +28,7 @@ function mapRow(r: Record<string, unknown>): JobListItem {
     category: String(r.category ?? "General"),
     examType: String(r.exam_type ?? "UPSC"),
     vacancies: Number(r.vacancies ?? 0),
+    vacanciesDisplay: r.vacancies_display ? String(r.vacancies_display) : (r.vacancies ? String(r.vacancies) : "See notification"),
     eligibility: String(r.eligibility ?? ""),
     lastDate: String(r.last_date ?? new Date().toISOString().slice(0, 10)),
     aiSummary: String(r.ai_summary ?? ""),

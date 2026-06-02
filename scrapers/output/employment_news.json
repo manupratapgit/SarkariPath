@@ -11,7 +11,8 @@
       "age_limit": null,
       "application_deadline": "10 June 2026",
       "location": "Jaipur, Rajasthan",
-      "notes": "Application fee Rs. 500 (open category), reduced for reserved category. Apply online or by post."
+      "notes": "Application fee Rs. 500 (open category), reduced for reserved category. Apply online or by post.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Teaching and Non-Teaching Positions (Faculty, Research Grants & Project Officer, Assistant Administrative Officer, Placement Officer, Assistant Electrical Engineer, Library Assistant, Account Assistant, Assistant HR)",
@@ -21,7 +22,8 @@
       "age_limit": "40 years (for some posts)",
       "application_deadline": "08 June 2026",
       "location": "Mumbai",
-      "notes": "Both permanent and contract/deputation positions. Apply via Institute website http://www.igidr.ac.in/careers/"
+      "notes": "Both permanent and contract/deputation positions. Apply via Institute website http://www.igidr.ac.in/careers/",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Whole-Time Member (Irrigation) and Whole-Time Member (Power)",
@@ -31,7 +33,8 @@
       "age_limit": null,
       "application_deadline": "03 June 2026",
       "location": "New Delhi",
-      "notes": "Applications to be forwarded to Section Officer (BBMB), Ministry of Power, Shram Shakti Bhawan, Rafi Marg, New Delhi-110001"
+      "notes": "Applications to be forwarded to Section Officer (BBMB), Ministry of Power, Shram Shakti Bhawan, Rafi Marg, New Delhi-110001",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Junior Consultant, NHA Cell, Bureau of Planning Division",
@@ -41,7 +44,8 @@
       "age_limit": null,
       "application_deadline": "01 June 2026",
       "location": "New Delhi",
-      "notes": "Contractual basis. Salary Rs. 40,000-70,000 per month"
+      "notes": "Contractual basis. Salary Rs. 40,000-70,000 per month",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Young Professional-II (YP-II)",
@@ -51,7 +55,8 @@
       "age_limit": null,
       "application_deadline": "08 June 2026 (Walk-in Interview)",
       "location": "New Delhi",
-      "notes": "Walk-in Interview on 08.06.2026 at 9:30 AM. Project: Strengthening Research-Extension-Farmer Linkages"
+      "notes": "Walk-in Interview on 08.06.2026 at 9:30 AM. Project: Strengthening Research-Extension-Farmer Linkages",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Young Professional (Organic Chemistry)",
@@ -61,7 +66,8 @@
       "age_limit": null,
       "application_deadline": "08 June 2026",
       "location": "Kanpur, Uttar Pradesh",
-      "notes": "Those who have already applied need not apply again"
+      "notes": "Those who have already applied need not apply again",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Management Trainee (Civil, Electrical, Mechanical, System, EBT, Geology, Industrial Engineer, Hindi, Company Secretary)",
@@ -71,7 +77,8 @@
       "age_limit": null,
       "application_deadline": "As per detailed CEN notification",
       "location": "Pan India (Kolkata HQ)",
-      "notes": "Computer Based Test across 09 disciplines. Maharatna PSU. Visit CIL website for details."
+      "notes": "Computer Based Test across 09 disciplines. Maharatna PSU. Visit CIL website for details.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Consultant (Security) on Contract Basis",
@@ -81,7 +88,8 @@
       "age_limit": null,
       "application_deadline": "As per NHPC website www.nhpcindia.com",
       "location": "Pan India",
-      "notes": "Online application only. Visit Career section of NHPC website"
+      "notes": "Online application only. Visit Career section of NHPC website",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Centre Director",
@@ -91,7 +99,8 @@
       "age_limit": "Preferably below 55 years (as on 12 June 2026)",
       "application_deadline": "12 June 2026",
       "location": "Mumbai",
-      "notes": "Pay Band Level 14. Gross salary at minimum of scale approx. Rs. 1,50,000+ inclusive of allowances. Indian citizen required."
+      "notes": "Pay Band Level 14. Gross salary at minimum of scale approx. Rs. 1,50,000+ inclusive of allowances. Indian citizen required.",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Airworthiness Officer",
@@ -101,7 +110,8 @@
       "age_limit": "35 years (UR/EWS), 38 years (OBC), 40 years (SC/ST), +10 years for PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. Vacancy No. 26050501623. Categories: UR-04, EWS-09, OBC-04, SC-03, ST-05, PwBD-01"
+      "notes": "Pay Scale Level 10 as per 7th CPC. Vacancy No. 26050501623. Categories: UR-04, EWS-09, OBC-04, SC-03, ST-05, PwBD-01",
+      "vacancies_display": "25"
     },
     {
       "job_title": "Deputy Commissioner (Explosives)",
@@ -111,7 +121,8 @@
       "age_limit": "As per UPSC norms",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. Vacancy No. 26050502523"
+      "notes": "Pay Scale Level 10 as per 7th CPC. Vacancy No. 26050502523",
+      "vacancies_display": "44"
     },
     {
       "job_title": "Manager (Mail Motor Service)",
@@ -121,7 +132,8 @@
       "age_limit": "35 years (UR), 38 years (OBC), 40 years (SC/ST), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. Categories: UR-06, OBC-01, ST-01. Vacancy No. 26050503623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. Categories: UR-06, OBC-01, ST-01. Vacancy No. 26050503623",
+      "vacancies_display": "8"
     },
     {
       "job_title": "Junior Technical Officer (Sugar)",
@@ -131,7 +143,8 @@
       "age_limit": "30 years (UR), 33 years (OBC), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 07 as per 7th CPC. Categories: UR-03, EWS-01, OBC-01. Vacancy No. 26050504623"
+      "notes": "Pay Scale Level 07 as per 7th CPC. Categories: UR-03, EWS-01, OBC-01. Vacancy No. 26050504623",
+      "vacancies_display": "5"
     },
     {
       "job_title": "Junior Technical Officer (Chemical Engineering)",
@@ -141,7 +154,8 @@
       "age_limit": "35 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "Kanpur, Uttar Pradesh",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050505625"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050505625",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Scientific Officer (Mechanical)",
@@ -151,7 +165,8 @@
       "age_limit": "30 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 08 as per 7th CPC. UR-02. Vacancy No. 26050506623"
+      "notes": "Pay Scale Level 08 as per 7th CPC. UR-02. Vacancy No. 26050506623",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Deputy Superintending Archaeological Engineer",
@@ -161,7 +176,8 @@
       "age_limit": "35 years (UR), 38 years (OBC), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-03, OBC-01. Vacancy No. 26050507523"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-03, OBC-01. Vacancy No. 26050507523",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Associate Professor, Electrical Engineering (Power System)",
@@ -171,7 +187,8 @@
       "age_limit": "45 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "Pune, Maharashtra",
-      "notes": "Pay Scale Academic Level-13A1 as per 7th CPC. UR-01. Vacancy No. 26050508323"
+      "notes": "Pay Scale Academic Level-13A1 as per 7th CPC. UR-01. Vacancy No. 26050508323",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Associate Professor, Mechanical Engineering (Heat Transfer)",
@@ -181,7 +198,8 @@
       "age_limit": "48 years (OBC)",
       "application_deadline": "12 June 2026",
       "location": "Pune, Maharashtra",
-      "notes": "Pay Scale Academic Level-13A1 as per 7th CPC. OBC-01. Vacancy No. 26050509323"
+      "notes": "Pay Scale Academic Level-13A1 as per 7th CPC. OBC-01. Vacancy No. 26050509323",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Lecturer (Persian Language)",
@@ -191,7 +209,8 @@
       "age_limit": "35 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050510223"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050510223",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Lecturer (Tibetan Language)",
@@ -201,7 +220,8 @@
       "age_limit": "35 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050511323"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050511323",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Scientist-B (Earth Sciences)",
@@ -211,7 +231,8 @@
       "age_limit": "35 years (UR/EWS), 38 years (OBC), 40 years (SC/ST)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-05, SC-01+more. Vacancy No. 26050512623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-05, SC-01+more. Vacancy No. 26050512623",
+      "vacancies_display": "7"
     },
     {
       "job_title": "Scientist-B (General Sciences/Instrumentation)",
@@ -221,7 +242,8 @@
       "age_limit": "35 years (UR/EWS), 38 years (OBC), 40 years (SC/ST)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. Includes PwBD-01. Vacancy No. 26050513623/26050514623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. Includes PwBD-01. Vacancy No. 26050513623/26050514623",
+      "vacancies_display": "30"
     },
     {
       "job_title": "Deputy Director (Civil Engineering)",
@@ -231,7 +253,8 @@
       "age_limit": "40 years (UR), 45 years (SC)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 11 as per 7th CPC. Vacancy No. 26050515623"
+      "notes": "Pay Scale Level 11 as per 7th CPC. Vacancy No. 26050515623",
+      "vacancies_display": "3"
     },
     {
       "job_title": "Joint Assistant Director",
@@ -241,7 +264,8 @@
       "age_limit": "30 years (UR), 33 years (OBC), 35 years (SC/ST)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 08 as per 7th CPC. UR-01, OBC-03, more. Vacancy No. 26050516623"
+      "notes": "Pay Scale Level 08 as per 7th CPC. UR-01, OBC-03, more. Vacancy No. 26050516623",
+      "vacancies_display": "6"
     },
     {
       "job_title": "Assistant Executive Engineer",
@@ -251,7 +275,8 @@
       "age_limit": "As per UPSC norms",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "UR-04, OBC-1, PwBD-01. Vacancy No. 26050517523"
+      "notes": "UR-04, OBC-1, PwBD-01. Vacancy No. 26050517523",
+      "vacancies_display": "6"
     },
     {
       "job_title": "Inspector of Mines Safety (Mining)",
@@ -261,7 +286,8 @@
       "age_limit": "40 years (UR), 43 years (OBC), 45 years (SC)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 07 as per 7th CPC. UR-05, OBC-02, SC-01. Vacancy No. 26050518523"
+      "notes": "Pay Scale Level 07 as per 7th CPC. UR-05, OBC-02, SC-01. Vacancy No. 26050518523",
+      "vacancies_display": "8"
     },
     {
       "job_title": "Assistant Director Grade-I (IEDS) (Chemical)",
@@ -271,7 +297,8 @@
       "age_limit": "35 years (SC/ST), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. SC-01, ST-01. Vacancy No. 26050519623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. SC-01, ST-01. Vacancy No. 26050519623",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Assistant Director Grade-II (IEDS) (Chemical)",
@@ -281,7 +308,8 @@
       "age_limit": "30 years (UR/EWS), 35 years (ST)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 07 as per 7th CPC. UR-01, EWS-01, ST-01. Vacancy No. 26050520623"
+      "notes": "Pay Scale Level 07 as per 7th CPC. UR-01, EWS-01, ST-01. Vacancy No. 26050520623",
+      "vacancies_display": "3"
     },
     {
       "job_title": "Assistant Director Grade-I (IEDS) (Food)",
@@ -291,7 +319,8 @@
       "age_limit": "30 years (UR), 33 years (OBC), 35 years (SC)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01, OBC-01, SC-01. Vacancy No. 26050521623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01, OBC-01, SC-01. Vacancy No. 26050521623",
+      "vacancies_display": "3"
     },
     {
       "job_title": "Assistant Director Grade-II (IEDS) (Food)",
@@ -301,7 +330,8 @@
       "age_limit": "30 years (UR), 33 years (OBC), 35 years (ST)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 07 as per 7th CPC. UR-02, OBC-01, ST-01. Vacancy No. 26050522623"
+      "notes": "Pay Scale Level 07 as per 7th CPC. UR-02, OBC-01, ST-01. Vacancy No. 26050522623",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Assistant Director Grade-I (IEDS) (Hosiery)",
@@ -311,7 +341,8 @@
       "age_limit": "30 years (UR), 33 years (OBC)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01, OBC-01. Vacancy No. 26050523623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01, OBC-01. Vacancy No. 26050523623",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Assistant Director Grade-II (IEDS) (Hosiery)",
@@ -321,7 +352,8 @@
       "age_limit": "30 years (UR), 33 years (OBC), 35 years (SC), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 07 as per 7th CPC. UR-02, OBC-01, SC-01. Vacancy No. 26050524623"
+      "notes": "Pay Scale Level 07 as per 7th CPC. UR-02, OBC-01, SC-01. Vacancy No. 26050524623",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Assistant Director Grade-I (IEDS) (Leather & Footwear)",
@@ -331,7 +363,8 @@
       "age_limit": "30 years (UR), 33 years (OBC), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 11 as per 7th CPC. UR-02, OBC-01. Vacancy No. 26050525623"
+      "notes": "Pay Scale Level 11 as per 7th CPC. UR-02, OBC-01. Vacancy No. 26050525623",
+      "vacancies_display": "3"
     },
     {
       "job_title": "Assistant Director Grade-II (IEDS) (Leather & Footwear)",
@@ -341,7 +374,8 @@
       "age_limit": "30 years (UR/EWS), 33 years (OBC), 35 years (ST)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 07 as per 7th CPC. UR-01, EWS-01, OBC-01, ST-01. Vacancy No. 26050526623"
+      "notes": "Pay Scale Level 07 as per 7th CPC. UR-01, EWS-01, OBC-01, ST-01. Vacancy No. 26050526623",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Assistant Director Grade-I (IEDS) (Metal Finishing)",
@@ -351,7 +385,8 @@
       "age_limit": "30 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050527623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-01. Vacancy No. 26050527623",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Assistant Controller of Mines",
@@ -361,7 +396,8 @@
       "age_limit": "35 years (UR), 40 years (SC/ST), +10 years PwBD",
       "application_deadline": "12 June 2026",
       "location": "Pan India",
-      "notes": "Pay Scale Level 10 as per 7th CPC. UR-03, SC-01, ST-01. Vacancy No. 26050528623"
+      "notes": "Pay Scale Level 10 as per 7th CPC. UR-03, SC-01, ST-01. Vacancy No. 26050528623",
+      "vacancies_display": "5"
     },
     {
       "job_title": "Research Officer",
@@ -371,7 +407,8 @@
       "age_limit": "30 years (UR)",
       "application_deadline": "12 June 2026",
       "location": "New Delhi",
-      "notes": "Pay Scale Level 08 as per 7th CPC. UR-02. Vacancy No. 26050529423"
+      "notes": "Pay Scale Level 08 as per 7th CPC. UR-02. Vacancy No. 26050529423",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Assistant Director / Registering Officer Antiquities",
@@ -381,7 +418,8 @@
       "age_limit": "40 years (ST)",
       "application_deadline": "12 June 2026",
       "location": "Ladakh",
-      "notes": "Pay Scale Level 08 as per 7th CPC. ST-01. Vacancy No. 26050530423"
+      "notes": "Pay Scale Level 08 as per 7th CPC. ST-01. Vacancy No. 26050530423",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Driller",
@@ -391,7 +429,8 @@
       "age_limit": "46 years (ST)",
       "application_deadline": "12 June 2026",
       "location": "Ladakh",
-      "notes": "Pay Scale Level 10A as per 7th CPC. ST-01. Vacancy No. 26050531623"
+      "notes": "Pay Scale Level 10A as per 7th CPC. ST-01. Vacancy No. 26050531623",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Tourist Officer",
@@ -401,7 +440,8 @@
       "age_limit": "40 years (ST)",
       "application_deadline": "12 June 2026",
       "location": "Ladakh",
-      "notes": "Pay Scale Level 07 as per 7th CPC. ST-01. Vacancy No. 26050532423"
+      "notes": "Pay Scale Level 07 as per 7th CPC. ST-01. Vacancy No. 26050532423",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Assistant Halwai-cum-Cook (Deputation)",
@@ -411,7 +451,8 @@
       "age_limit": "Not exceeding 56 years",
       "application_deadline": "As per UPSC website vacancy-circulars",
       "location": "New Delhi",
-      "notes": "Group C Non-Gazetted Non-Ministerial, Level 2 (Rs. 19,900-63,200). Deputation for 3 years or until further orders."
+      "notes": "Group C Non-Gazetted Non-Ministerial, Level 2 (Rs. 19,900-63,200). Deputation for 3 years or until further orders.",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Various Posts on Deputation",
@@ -421,7 +462,8 @@
       "age_limit": null,
       "application_deadline": "05 June 2026",
       "location": "Kolkata",
-      "notes": "Deputation basis for 3 years"
+      "notes": "Deputation basis for 3 years",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Business Manager (Deputation)",
@@ -431,7 +473,8 @@
       "age_limit": "Not exceeding 56 years on closing date",
       "application_deadline": "60 days from date of advertisement in Employment News",
       "location": "New Delhi",
-      "notes": "Level 11 (Rs. 67,700-2,08,700). Deputation basis up to 4 years. Desirable: Master's Degree."
+      "notes": "Level 11 (Rs. 67,700-2,08,700). Deputation basis up to 4 years. Desirable: Master's Degree.",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Part-time Medical Officer (PTMO)",
@@ -441,7 +484,8 @@
       "age_limit": null,
       "application_deadline": "25 May 2026 (Walk-in Interview)",
       "location": "Meerut Cantt, Uttar Pradesh",
-      "notes": "Contractual basis. Walk-in interview on 25 May 2026 at 10:30 AM"
+      "notes": "Contractual basis. Walk-in interview on 25 May 2026 at 10:30 AM",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Deputy Director (Handicrafts) (Deputation)",
@@ -451,7 +495,8 @@
       "age_limit": "Not exceeding 56 years on closing date",
       "application_deadline": "2 months from date of publication",
       "location": "New Delhi (HQ)",
-      "notes": "Level 11 (Rs. 67,700-2,08,700). Deputation basis not exceeding 4 years. Post carries All-India transfer liability."
+      "notes": "Level 11 (Rs. 67,700-2,08,700). Deputation basis not exceeding 4 years. Post carries All-India transfer liability.",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Young Professionals (17 posts across multiple disciplines)",
@@ -461,7 +506,8 @@
       "age_limit": null,
       "application_deadline": "08 June 2026",
       "location": "Pan India",
-      "notes": "Contract basis. Apply via NSIC website www.nsic.co.in Career Section"
+      "notes": "Contract basis. Apply via NSIC website www.nsic.co.in Career Section",
+      "vacancies_display": "17"
     },
     {
       "job_title": "Full-time Member (Technical) x2",
@@ -471,7 +517,8 @@
       "age_limit": null,
       "application_deadline": "As per detailed advertisement",
       "location": "NCR/New Delhi",
-      "notes": "Statutory Body under Commission for Air Quality Management Act 2021"
+      "notes": "Statutory Body under Commission for Air Quality Management Act 2021",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Library Professional Trainees (Graduate or Diploma holder)",
@@ -481,7 +528,8 @@
       "age_limit": null,
       "application_deadline": "Within 30 days from date of publication",
       "location": "New Delhi",
-      "notes": "Engagement for 1 year (2026-2027) on monthly stipend of Rs. 9,000/-"
+      "notes": "Engagement for 1 year (2026-2027) on monthly stipend of Rs. 9,000/-",
+      "vacancies_display": "9"
     },
     {
       "job_title": "Regular Assistant Professor",
@@ -491,7 +539,8 @@
       "age_limit": null,
       "application_deadline": "Online by 15 June 2026; Hard copy by 22 June 2026",
       "location": "Sambalpur, Odisha",
-      "notes": "Apply via HIMS portal https://himsrecruitment.odisha.gov.in/home. Hard copy to Registrar, OSOU, Sambalpur-768024"
+      "notes": "Apply via HIMS portal https://himsrecruitment.odisha.gov.in/home. Hard copy to Registrar, OSOU, Sambalpur-768024",
+      "vacancies_display": "23"
     },
     {
       "job_title": "Regular Professor",
@@ -501,7 +550,8 @@
       "age_limit": null,
       "application_deadline": "Online by 15 June 2026; Hard copy by 22 June 2026",
       "location": "Sambalpur, Odisha",
-      "notes": "Apply via HIMS portal"
+      "notes": "Apply via HIMS portal",
+      "vacancies_display": "8"
     },
     {
       "job_title": "Regular Associate Professor",
@@ -511,7 +561,8 @@
       "age_limit": null,
       "application_deadline": "Online by 15 June 2026; Hard copy by 22 June 2026",
       "location": "Sambalpur, Odisha",
-      "notes": "Apply via HIMS portal"
+      "notes": "Apply via HIMS portal",
+      "vacancies_display": "7"
     },
     {
       "job_title": "Assistant Soil Conservation Officer (NRMI/RFS) - Deputation",
@@ -521,7 +572,8 @@
       "age_limit": null,
       "application_deadline": "60 days from publication in Employment News",
       "location": "New Delhi",
-      "notes": "Level 10 (Rs. 56,100-1,77,500). Deputation including short-term contract"
+      "notes": "Level 10 (Rs. 56,100-1,77,500). Deputation including short-term contract",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Research Associate (x4) - Crisis Control Room",
@@ -531,7 +583,8 @@
       "age_limit": null,
       "application_deadline": "21 days from date of publication on Ministry website",
       "location": "New Delhi",
-      "notes": "24x7 Crisis Control Room. Consolidated monthly fee of Rs. 40,000/- per Research Associate"
+      "notes": "24x7 Crisis Control Room. Consolidated monthly fee of Rs. 40,000/- per Research Associate",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Professors, Associate Professors, Assistant Professors (Multiple Posts)",
@@ -541,7 +594,8 @@
       "age_limit": null,
       "application_deadline": "04 June 2026 (online); 10 June 2026 (hard copy)",
       "location": "Rajasthan",
-      "notes": "Application fee Rs. 1500 (General), Rs. 750 (SC/ST/PwBD)"
+      "notes": "Application fee Rs. 1500 (General), Rs. 750 (SC/ST/PwBD)",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Young Professionals / Junior Research Consultants (9 posts)",
@@ -551,7 +605,8 @@
       "age_limit": null,
       "application_deadline": "30 June 2026",
       "location": "New Delhi",
-      "notes": "Contractual basis. Advertisement No. 06/2026"
+      "notes": "Contractual basis. Advertisement No. 06/2026",
+      "vacancies_display": "9"
     },
     {
       "job_title": "Administrative Officer (Finance and Accounts)",
@@ -561,7 +616,8 @@
       "age_limit": "50 years from date of publication",
       "application_deadline": "As per IIM Shillong website",
       "location": "Shillong, Meghalaya",
-      "notes": "Pay Level 10. Advt. No. 81-220710925-ADMNG"
+      "notes": "Pay Level 10. Advt. No. 81-220710925-ADMNG",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Photographic Officer (Deputation)",
@@ -571,7 +627,8 @@
       "age_limit": null,
       "application_deadline": "As per Academy website",
       "location": "Hyderabad",
-      "notes": "Deputation basis"
+      "notes": "Deputation basis",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Administrative Officer (C) - Deputation",
@@ -581,7 +638,8 @@
       "age_limit": null,
       "application_deadline": "22 days from date of publication",
       "location": "Mumbai",
-      "notes": "Pay Level 10. Apply ONLY ONLINE. Advertisement No. 2026/8"
+      "notes": "Pay Level 10. Apply ONLY ONLINE. Advertisement No. 2026/8",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Stenographer Grade-I (Deputation)",
@@ -591,7 +649,8 @@
       "age_limit": "Not exceeding 56 years on closing date",
       "application_deadline": "20 days from date of publication",
       "location": "PIN-908545, C/O 56 APO",
-      "notes": "Deputation including Short Term Contract for initial 3 years"
+      "notes": "Deputation including Short Term Contract for initial 3 years",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Principal System Analyst (Deputation)",
@@ -601,7 +660,8 @@
       "age_limit": "Not exceeding 56 years on closing date",
       "application_deadline": "60 days from date of publication",
       "location": "New Delhi",
-      "notes": "Level 12. Deputation including short-term contract, max 4 years"
+      "notes": "Level 12. Deputation including short-term contract, max 4 years",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Senior Scientific Officer, Management & System",
@@ -611,7 +671,8 @@
       "age_limit": null,
       "application_deadline": "20 June 2026 (07 July 2026 for NER/Ladakh/J&K/HP/Andaman etc.)",
       "location": "Wardha, Maharashtra",
-      "notes": "Pay Band 3: Rs. 15,600-39,100, Pay Level-11. Direct recruitment. 5 years experience required."
+      "notes": "Pay Band 3: Rs. 15,600-39,100, Pay Level-11. Direct recruitment. 5 years experience required.",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Full-Time Positions (Medical: Radiotherapists, Physiotherapists, Radiotherapy Technicians, Network Administrator, ICU/OT/Electronics/Dialysis Technicians, Carpenter, AC Technician, CSSD Technician, Fire Safety, Multi-Skilled Technician, Plumber)",
@@ -621,7 +682,8 @@
       "age_limit": "27 years for technician posts",
       "application_deadline": "11 June 2026",
       "location": "Punjab",
-      "notes": "Online application at https://tmc.gov.in. Various Levels 06-10"
+      "notes": "Online application at https://tmc.gov.in. Various Levels 06-10",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Research Associate (RA) - Quantum Technologies",
@@ -631,7 +693,8 @@
       "age_limit": "35 years (as on last date; relaxable for SC/ST/OBC)",
       "application_deadline": "30 days from date of publication",
       "location": "Pune, Maharashtra",
-      "notes": "Stipend Rs. 67,000/- per month + HRA. Fellowship for 2 years."
+      "notes": "Stipend Rs. 67,000/- per month + HRA. Fellowship for 2 years.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Senior Inspector (Technical) - Deputation",
@@ -641,7 +704,8 @@
       "age_limit": null,
       "application_deadline": "60 days from date of publication",
       "location": "Lucknow, Uttar Pradesh",
-      "notes": "Deputation basis. Vacancy Circular No. 01/2026/NEC"
+      "notes": "Deputation basis. Vacancy Circular No. 01/2026/NEC",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Project Technical Support-II",
@@ -651,7 +715,8 @@
       "age_limit": null,
       "application_deadline": "30 May 2026",
       "location": "New Delhi",
-      "notes": "Under ICMR Intermediate Grant Scheme. Monthly emoluments Rs. 28,000/- + HRA for 1 year (extendable to 2 years)"
+      "notes": "Under ICMR Intermediate Grant Scheme. Monthly emoluments Rs. 28,000/- + HRA for 1 year (extendable to 2 years)",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Zonal Director (Deputation)",
@@ -661,7 +726,8 @@
       "age_limit": "Not exceeding 58 years on closing date",
       "application_deadline": "60 days from date of publication",
       "location": "Mumbai (various zones)",
-      "notes": "Level 12 (Rs. 78,500-2,09,200). Deputation including short-term contract"
+      "notes": "Level 12 (Rs. 78,500-2,09,200). Deputation including short-term contract",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Various positions - Historical Documents/Information Technology",
@@ -671,7 +737,8 @@
       "age_limit": "Not exceeding 65 years (for senior posts); 45 years for entry-level",
       "application_deadline": "21 days from date of publication",
       "location": "Rampur, Uttar Pradesh",
-      "notes": "Contract basis. Positions include IT/Computer roles, Finance, Typists (Hindi and English). Send applications through Speed Post/Registered Post."
+      "notes": "Contract basis. Positions include IT/Computer roles, Finance, Typists (Hindi and English). Send applications through Speed Post/Registered Post.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Deputy Commissioner and Assistant Commissioner (Deputation)",
@@ -681,7 +748,8 @@
       "age_limit": "Not exceeding 56 years on closing date",
       "application_deadline": "6 weeks from publication",
       "location": "New Delhi / Pan India",
-      "notes": "2 Deputy Commissioner (Level 12) + 2 Assistant Commissioner (Level 11) posts. Apply through proper channel to Under Secretary, Room 4384, Krishi Bhawan"
+      "notes": "2 Deputy Commissioner (Level 12) + 2 Assistant Commissioner (Level 11) posts. Apply through proper channel to Under Secretary, Room 4384, Krishi Bhawan",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Medical Faculty Positions (Rolling Phase 1)",
@@ -691,7 +759,8 @@
       "age_limit": null,
       "application_deadline": "As per 9th Rolling Phase 1 advertisement",
       "location": "Deoghar, Jharkhand",
-      "notes": "Direct recruitment/deputation basis for various departments. Advt. No. AIIMS/DEO/RECT.CELL/2026-27/205"
+      "notes": "Direct recruitment/deputation basis for various departments. Advt. No. AIIMS/DEO/RECT.CELL/2026-27/205",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Junior Scientific Officer (Deputation)",
@@ -701,7 +770,8 @@
       "age_limit": null,
       "application_deadline": "As per Academy website",
       "location": "Hyderabad, Telangana",
-      "notes": "Deputation basis. No. 15071/01/2020/Estt/A2"
+      "notes": "Deputation basis. No. 15071/01/2020/Estt/A2",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Assistant General Manager (Finance), Assistant Manager, Assistant Manager (Agriculture)",
@@ -711,7 +781,8 @@
       "age_limit": "38 years (AGM Finance), 30 years (Asst Manager)",
       "application_deadline": "22 June 2026",
       "location": "New Delhi and Pan India",
-      "notes": "Recruitment Advertisement No. 1/2026 dated 23 May 2026. Application fee Rs. 500 (AGM), Rs. 300 (Asst Manager). Online applications only."
+      "notes": "Recruitment Advertisement No. 1/2026 dated 23 May 2026. Application fee Rs. 500 (AGM), Rs. 300 (Asst Manager). Online applications only.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Technician Grade-I Signal and Technician Grade-III",
@@ -721,7 +792,8 @@
       "age_limit": "As per 7th CPC norms",
       "application_deadline": "07 July 2026",
       "location": "Pan India (All RRBs)",
-      "notes": "CEN No. 02/2026. Online applications at https://www.rrbapply.gov.in. Pay Level 06 and 02"
+      "notes": "CEN No. 02/2026. Online applications at https://www.rrbapply.gov.in. Pay Level 06 and 02",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Project-Based Consultants (Chief Project Manager & Project Manager level)",
@@ -731,7 +803,8 @@
       "age_limit": "28-50 years",
       "application_deadline": "31 May 2026",
       "location": "Delhi",
-      "notes": "Project-based engagement. Consolidated remuneration Rs. 1,00,000+ per month for senior posts"
+      "notes": "Project-based engagement. Consolidated remuneration Rs. 1,00,000+ per month for senior posts",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Principal Private Secretary (Deputation)",
@@ -741,7 +814,8 @@
       "age_limit": null,
       "application_deadline": "60 days from date of publication in Employment News",
       "location": "Gurugram, Haryana",
-      "notes": "Deputation on foreign service terms basis including short-term contract"
+      "notes": "Deputation on foreign service terms basis including short-term contract",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Upper Division Clerk (Deputation)",
@@ -751,7 +825,8 @@
       "age_limit": null,
       "application_deadline": "60 days from date of publication",
       "location": "Kalyani, West Bengal",
-      "notes": "Level 4 (Rs. 25,500-84,100). Group C Non-Gazetted Non-Ministerial"
+      "notes": "Level 4 (Rs. 25,500-84,100). Group C Non-Gazetted Non-Ministerial",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Superintendent of Police (Deputation)",
@@ -761,7 +836,8 @@
       "age_limit": null,
       "application_deadline": "45 days from date of publication",
       "location": "All India based",
-      "notes": "Pay Level 13 (Rs. 78,800-2,09,200). BVA Quota applicable. No. E-70/001/Depu-SP/NIA/2025"
+      "notes": "Pay Level 13 (Rs. 78,800-2,09,200). BVA Quota applicable. No. E-70/001/Depu-SP/NIA/2025",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Deputy Director (Stakeholders Awareness and Outreach) - Deputation",
@@ -771,7 +847,8 @@
       "age_limit": null,
       "application_deadline": "30 days from date of publication",
       "location": "New Delhi",
-      "notes": "Level 11 (Rs. 67,700-2,08,700). Applications to Assistant Director (HR), WDRA, New Delhi"
+      "notes": "Level 11 (Rs. 67,700-2,08,700). Applications to Assistant Director (HR), WDRA, New Delhi",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Executives in E-1 Grade (Finance, Projects, Legal, Company Secretary, IT)",
@@ -781,7 +858,8 @@
       "age_limit": null,
       "application_deadline": "18 June 2026",
       "location": "New Delhi",
-      "notes": "Pay scale Rs. 40,000-1,40,000 (E-1 Grade) regular basis. Lateral positions also available at higher grades. Online MODE. SMFCL Rectt. Advt. No. 01 & 02/2026"
+      "notes": "Pay scale Rs. 40,000-1,40,000 (E-1 Grade) regular basis. Lateral positions also available at higher grades. Online MODE. SMFCL Rectt. Advt. No. 01 & 02/2026",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Engineering Executive Trainees - Mining (through GATE-2025)",
@@ -791,7 +869,8 @@
       "age_limit": "27 years (as on test date of online application; relaxable for reserved categories)",
       "application_deadline": "29 May 2026 (last date for online application)",
       "location": "Pan India",
-      "notes": "Service bond Rs. 5,00,000 (General/EWS/OBC), Rs. 2,50,000 (SC/ST). One-year training after selection."
+      "notes": "Service bond Rs. 5,00,000 (General/EWS/OBC), Rs. 2,50,000 (SC/ST). One-year training after selection.",
+      "vacancies_display": "25"
     },
     {
       "job_title": "Engineering Executive Trainees - Civil (OBC Special Drive, through GATE-2025)",
@@ -801,7 +880,8 @@
       "age_limit": "As on last date of online application; relaxable for OBC/PwBD",
       "application_deadline": "As per NTPC website careers.ntpc.co.in",
       "location": "Pan India",
-      "notes": "Special Recruitment Drive (OBC). Advertisement No. 078/26. OBC backlog vacancies including 01 PwBD post (OBC)."
+      "notes": "Special Recruitment Drive (OBC). Advertisement No. 078/26. OBC backlog vacancies including 01 PwBD post (OBC).",
+      "vacancies_display": "27"
     },
     {
       "job_title": "Junior Research Fellows (JRF) - Quantum Technologies",
@@ -811,7 +891,8 @@
       "age_limit": null,
       "application_deadline": "As per VECC homepage www.vecc.gov.in",
       "location": "Kolkata, West Bengal",
-      "notes": "PhD programme. Abridged Advt. No. VECC-2/2026"
+      "notes": "PhD programme. Abridged Advt. No. VECC-2/2026",
+      "vacancies_display": "9"
     },
     {
       "job_title": "Accounts Officer (Composite method - Promotion/Deputation)",
@@ -821,7 +902,8 @@
       "age_limit": "Not exceeding 56 years on closing date",
       "application_deadline": "40 days from date of issue or publication in Employment News",
       "location": "New Delhi (DG/CISF HQ)",
-      "notes": "Pay Level 7 (Rs. 44,900-1,42,400). Period of deputation: 2 years. No. E-16015/AO-Dep/CISF/2026/Pers-II/352"
+      "notes": "Pay Level 7 (Rs. 44,900-1,42,400). Period of deputation: 2 years. No. E-16015/AO-Dep/CISF/2026/Pers-II/352",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Various posts on deputation (Research Fellow, Law Officer, Finance & Accounts Officer)",
@@ -831,7 +913,8 @@
       "age_limit": null,
       "application_deadline": "As per advertisement",
       "location": "Goa",
-      "notes": "Positions include Research Fellow (Level 07), Law Officer (Level 11), Finance & Accounts Officer (Level 07). Contact Member Secretary, Goa Planning Board, Lodhi Road."
+      "notes": "Positions include Research Fellow (Level 07), Law Officer (Level 11), Finance & Accounts Officer (Level 07). Contact Member Secretary, Goa Planning Board, Lodhi Road.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Specialist Cadre Officers - Trade Finance Officer (MMGS-II)",
@@ -841,7 +924,8 @@
       "age_limit": "As on 30.04.2026",
       "application_deadline": "As per SBI notification CRPD/SCO/2026-27/05",
       "location": "Pan India",
-      "notes": "Regular basis. MMGS-II scale. Application fee payment from 13.05.2026 onwards. Apply at https://sbi.bank.in/web/careers"
+      "notes": "Regular basis. MMGS-II scale. Application fee payment from 13.05.2026 onwards. Apply at https://sbi.bank.in/web/careers",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Senior Defence Banking Advisor (SDBA) and Defence Banking Advisor (DBA)",
@@ -851,7 +935,8 @@
       "age_limit": "As on 01/01/2026",
       "application_deadline": "31 May 2026",
       "location": "Pan India",
-      "notes": "Contractual basis. Compensation: Rs. 22-38 Lakhs per annum (SDBA), Rs. 8-60 Lakhs per annum (DBA). Online registration opens 12.05.2026."
+      "notes": "Contractual basis. Compensation: Rs. 22-38 Lakhs per annum (SDBA), Rs. 8-60 Lakhs per annum (DBA). Online registration opens 12.05.2026.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Senior Research Fellow (x2)",
@@ -861,7 +946,8 @@
       "age_limit": null,
       "application_deadline": "09 June 2026",
       "location": "New Delhi",
-      "notes": "Contractual basis in ICAR-funded mustard project. Emoluments Rs. 37,000/- + HRA. Apply via email mustardiari@gmail.com"
+      "notes": "Contractual basis in ICAR-funded mustard project. Emoluments Rs. 37,000/- + HRA. Apply via email mustardiari@gmail.com",
+      "vacancies_display": "2"
     },
     {
       "job_title": "Regular Positions (Accounts Officer, Purchase Officer, Company Secretary) and Deputation (Manager Hindi/Rajbhasha Adhikari)",
@@ -871,7 +957,8 @@
       "age_limit": "33 years (E-1 Grade); 56 years (Deputation)",
       "application_deadline": "30 May 2026",
       "location": "Sahibabad, Ghaziabad, Uttar Pradesh",
-      "notes": "Grade E1. Manager Hindi post on Deputation/Absorption basis. Must have MA in Hindi."
+      "notes": "Grade E1. Manager Hindi post on Deputation/Absorption basis. Must have MA in Hindi.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Various Administrative Positions (Deputy Manager, Assistant Manager, Chief Operating Officer, Chief Technology Officer, Officers, Unit Head, Junior Officers across multiple SBUs)",
@@ -881,7 +968,8 @@
       "age_limit": "As on 05.06.2026",
       "application_deadline": "As per website",
       "location": "Various locations (Kolkata HQ, multiple SBUs)",
-      "notes": "Regular and Fixed-Term Contractual positions. Multiple SBUs: Logistics Services, Travel & Vacations, Industrial Packaging, Greases & Lubricants."
+      "notes": "Regular and Fixed-Term Contractual positions. Multiple SBUs: Logistics Services, Travel & Vacations, Industrial Packaging, Greases & Lubricants.",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Upper Division Clerk (Deputation)",
@@ -891,7 +979,8 @@
       "age_limit": null,
       "application_deadline": "60 days from date of publication",
       "location": "Hyderabad, Telangana",
-      "notes": "Level 4 (Rs. 25,500-81,100). Deputation basis."
+      "notes": "Level 4 (Rs. 25,500-81,100). Deputation basis.",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Walk-in Interview for Project Research Scientist-II, Project Technical Support-II, YP-I, YP-II",
@@ -901,7 +990,8 @@
       "age_limit": null,
       "application_deadline": "06 June 2026 (Walk-in Interview)",
       "location": "Medziphema, Nagaland",
-      "notes": "Purely contractual basis for duration of project. Walk-in on 06.06.2026. Details at www.nrcmithun.res.in"
+      "notes": "Purely contractual basis for duration of project. Walk-in on 06.06.2026. Details at www.nrcmithun.res.in",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Deputation posts (including Senior Administrative Officer, Junior Translation Officer, Personal Executive)",
@@ -911,7 +1001,8 @@
       "age_limit": "As per original vacancy notice",
       "application_deadline": "08 June 2026 (extended)",
       "location": "Gurugram, Haryana",
-      "notes": "09 posts Senior Administrative Officer (Pay Level-7), 01 post Junior Translation Officer (Pay Level-4), 01 post Personal Executive (Pay Level). Extended from 30 March 2026."
+      "notes": "09 posts Senior Administrative Officer (Pay Level-7), 01 post Junior Translation Officer (Pay Level-4), 01 post Personal Executive (Pay Level). Extended from 30 March 2026.",
+      "vacancies_display": "11"
     },
     {
       "job_title": "Associate Professor (UR) - Deputation",
@@ -921,7 +1012,8 @@
       "age_limit": null,
       "application_deadline": "01 June 2026 (online); 10 June 2026 (hard copy)",
       "location": "Srinagar, Jammu & Kashmir",
-      "notes": "Pay Level 13A. Apply at https://kashmiruniversity.net"
+      "notes": "Pay Level 13A. Apply at https://kashmiruniversity.net",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Research Investigator (SC Category) - Deputation",
@@ -931,7 +1023,8 @@
       "age_limit": null,
       "application_deadline": "12 June 2026 (online); 16 June 2026 (hard copy)",
       "location": "Srinagar, Jammu & Kashmir",
-      "notes": "Pay Level 6 (Rs. 35,400-1,12,400). Apply at https://kashmiruniversity.net"
+      "notes": "Pay Level 6 (Rs. 35,400-1,12,400). Apply at https://kashmiruniversity.net",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Various Contractual Positions at Rajiv Gandhi National Aviation University (Server Engineer, Full Stack Developer, Computer Lab Engineer)",
@@ -941,7 +1034,8 @@
       "age_limit": null,
       "application_deadline": "15 June 2026",
       "location": "Rae Bareli, Uttar Pradesh",
-      "notes": "Contract basis, initially 1 year, extendable up to 3 years. Consolidated remuneration Rs. 35,000-80,000 per month. Apply at https://rgnau.samarth.edu.in"
+      "notes": "Contract basis, initially 1 year, extendable up to 3 years. Consolidated remuneration Rs. 35,000-80,000 per month. Apply at https://rgnau.samarth.edu.in",
+      "vacancies_display": "4"
     },
     {
       "job_title": "Various posts at Defence Services Staff College (Peon, LDC, Cook/Office & Training, Stenographer Grade-II, Supervisor Networking, others)",
@@ -951,7 +1045,8 @@
       "age_limit": "18-25 or 18-27 years depending on post",
       "application_deadline": "21 days from date of publication in Employment News",
       "location": "Wellington, Nilgiris, Tamil Nadu",
-      "notes": "Vacancies reserved for Ex-Servicemen and PwBD. Details at www.ids.nic.in"
+      "notes": "Vacancies reserved for Ex-Servicemen and PwBD. Details at www.ids.nic.in",
+      "vacancies_display": "See notification"
     },
     {
       "job_title": "Lead Consultant - Knowledge Management Division",
@@ -961,7 +1056,8 @@
       "age_limit": "55 years and below",
       "application_deadline": "02 June 2026",
       "location": "New Delhi",
-      "notes": "Compensation Rs. 1,30,000-1,70,000 per month"
+      "notes": "Compensation Rs. 1,30,000-1,70,000 per month",
+      "vacancies_display": "1"
     },
     {
       "job_title": "Junior Research Fellow (JRF) - Walk-in Interview",
@@ -971,7 +1067,8 @@
       "age_limit": null,
       "application_deadline": "09 June 2026 (Walk-in Interview)",
       "location": "Bengaluru, Karnataka",
-      "notes": "LRDE Advt. No. 01/2026/JRF"
+      "notes": "LRDE Advt. No. 01/2026/JRF",
+      "vacancies_display": "See notification"
     }
   ]
 }

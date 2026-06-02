@@ -4,6 +4,7 @@ export interface JobCardData {
   organization: string;
   category: string;
   vacancies: number;
+  vacanciesDisplay?: string;
   eligibility: string;
   lastDate: string;
   aiSummary: string;
@@ -18,6 +19,7 @@ export default function JobCard({
   organization,
   category,
   vacancies,
+  vacanciesDisplay,
   eligibility,
   lastDate,
   aiSummary,
@@ -56,8 +58,17 @@ export default function JobCard({
             <p className="text-xs text-gray-500 mt-0.5">{organization}</p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-2xl font-extrabold text-gray-900">{vacancies.toLocaleString("en-IN")}</p>
-            <p className="text-xs text-gray-400">Vacancies</p>
+            {vacanciesDisplay === "See notification" ? (
+              <>
+                <p className="text-xs font-semibold text-orange-500 leading-none">See</p>
+                <p className="text-xs font-semibold text-orange-500">notification</p>
+              </>
+            ) : (
+              <>
+                <p className="text-2xl font-extrabold text-gray-900">{vacanciesDisplay || vacancies.toLocaleString("en-IN")}</p>
+                <p className="text-xs text-gray-400">Vacancies</p>
+              </>
+            )}
           </div>
         </div>
 
