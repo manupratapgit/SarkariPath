@@ -1,208 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JobsFilterSidebar, { DEFAULT_FILTERS, type JobFilters } from "@/components/jobs/JobsFilterSidebar";
 import ActiveFilterPills from "@/components/jobs/ActiveFilterPills";
 import JobListCard, { type JobListItem } from "@/components/jobs/JobListCard";
 import Pagination from "@/components/jobs/Pagination";
-
-// ─── Mock data ───────────────────────────────────────────────────────────────
-const ALL_JOBS: JobListItem[] = [
-  {
-    id: "upsc-cse-2025",
-    title: "UPSC Civil Services Examination 2025",
-    organization: "Union Public Service Commission",
-    category: "General",
-    examType: "UPSC",
-    vacancies: 1056,
-    eligibility: "Graduate (any discipline) · Age 21–32 yrs",
-    lastDate: "2026-08-15",
-    aiSummary: "Premier IAS/IPS/IFS recruitment. 3-stage process: Prelims (June), Mains (Sep), Interview. Approx 10 lakh applicants yearly — one of India's toughest exams.",
-    location: "All India",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: true,
-  },
-  {
-    id: "ssc-cgl-2025",
-    title: "SSC Combined Graduate Level (CGL) 2025",
-    organization: "Staff Selection Commission",
-    category: "General",
-    examType: "SSC",
-    vacancies: 17727,
-    eligibility: "Graduate · Age 18–32 yrs",
-    lastDate: "2026-07-20",
-    aiSummary: "Largest central govt recruitment — Inspector, Auditor, Accountant across 40+ ministries. Tier-I & II CBT followed by document verification.",
-    location: "All India",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: true,
-  },
-  {
-    id: "rrb-ntpc-2025",
-    title: "RRB NTPC Graduate Posts 2025",
-    organization: "Railway Recruitment Board",
-    category: "OBC",
-    examType: "Railways (RRB)",
-    vacancies: 11558,
-    eligibility: "Graduate · Age 18–33 yrs",
-    lastDate: "2026-09-10",
-    aiSummary: "Station Master, Goods Guard, Jr Account Assistant posts. CBT 1 → CBT 2 → Typing/Skill test. Medical fitness mandatory for operational posts.",
-    location: "All India",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: false,
-  },
-  {
-    id: "ibps-po-2025",
-    title: "IBPS PO (Probationary Officer) XIV 2025",
-    organization: "Institute of Banking Personnel Selection",
-    category: "General",
-    examType: "Banking (IBPS/SBI)",
-    vacancies: 4455,
-    eligibility: "Graduate · Age 20–30 yrs",
-    lastDate: "2026-06-30",
-    aiSummary: "PO recruitment across 11 public sector banks. Prelims → Mains → Interview. Starting CTC ₹8.2 LPA + DA, HRA. Bond period: 2 years.",
-    location: "All India",
-    status: "Closing Soon",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: true,
-  },
-  {
-    id: "dsssb-tgt-2025",
-    title: "DSSSB TGT / PGT Teacher Recruitment 2025",
-    organization: "Delhi Subordinate Services Selection Board",
-    category: "SC",
-    examType: "Teaching (DSSSB/KVS)",
-    vacancies: 6593,
-    eligibility: "B.Ed + relevant degree · CTET mandatory · Age 18–32 yrs",
-    lastDate: "2026-08-01",
-    aiSummary: "Teaching posts across Delhi govt schools for classes 6–12. One-tier online exam + document verification. CTET Paper-II score mandatory.",
-    location: "Delhi",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: false,
-  },
-  {
-    id: "agniveer-army-2025",
-    title: "Indian Army Agniveer Recruitment 2025",
-    organization: "Indian Army — ARO",
-    category: "General",
-    examType: "Defence",
-    vacancies: 25000,
-    eligibility: "10th / 12th pass (trade-wise) · Age 17.5–23 yrs",
-    lastDate: "2026-10-01",
-    aiSummary: "4-year short-service tour across General Duty, Clerk, Technical, Tradesman trades. 25% retained permanently. ₹11.71 lakh Seva Nidhi on exit.",
-    location: "All India",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: false,
-  },
-  {
-    id: "bpsc-68th-2025",
-    title: "BPSC 68th Combined Competitive Exam 2025",
-    organization: "Bihar Public Service Commission",
-    category: "ST",
-    examType: "State PSC",
-    vacancies: 281,
-    eligibility: "Graduate (any discipline) · Age 20–37 yrs",
-    lastDate: "2026-07-15",
-    aiSummary: "Bihar civil services — SDM, BDO, Inspector posts. Prelims (Objective) + Mains (Descriptive) + Interview. Bihar domicile preferred for certain posts.",
-    location: "Bihar",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: true,
-  },
-  {
-    id: "rpsc-ras-2025",
-    title: "RPSC RAS / RTS Combined Competitive Exam 2025",
-    organization: "Rajasthan Public Service Commission",
-    category: "EWS",
-    examType: "State PSC",
-    vacancies: 905,
-    eligibility: "Graduate · Age 21–40 yrs (relaxation for reserved categories)",
-    lastDate: "2026-06-25",
-    aiSummary: "Rajasthan Administrative Service — District Collector, SDO posts via Prelims + Mains + Interview. Rajasthani language paper compulsory in Mains.",
-    location: "Rajasthan",
-    status: "Closing Soon",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: false,
-  },
-  {
-    id: "upprpb-si-2025",
-    title: "UP Police Sub-Inspector Civil Police Recruitment 2025",
-    organization: "UPPRPB — Uttar Pradesh Police Recruitment Board",
-    category: "OBC",
-    examType: "Police",
-    vacancies: 9534,
-    eligibility: "Graduate · Age 21–28 yrs · Physical fitness mandatory",
-    lastDate: "2026-07-31",
-    aiSummary: "Sub-Inspector posts for civil, platoon commander & ASI accountant roles. Written test (400 marks) → PST/PET → Document verification → Medical exam.",
-    location: "Uttar Pradesh",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: true,
-  },
-  {
-    id: "ssc-chsl-2025",
-    title: "SSC CHSL (10+2) 2025",
-    organization: "Staff Selection Commission",
-    category: "General",
-    examType: "SSC",
-    vacancies: 3712,
-    eligibility: "12th Pass · Age 18–27 yrs",
-    lastDate: "2026-08-20",
-    aiSummary: "Lower Division Clerk, Postal/Sorting Assistant, Data Entry Operator posts across central ministries. Tier-I CBT + Tier-II (Skill/Typing) test.",
-    location: "All India",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: false,
-  },
-  {
-    id: "crpf-constable-2025",
-    title: "CRPF Constable Technical & Tradesmen 2025",
-    organization: "Central Reserve Police Force",
-    category: "SC",
-    examType: "Defence",
-    vacancies: 9212,
-    eligibility: "10th Pass + ITI/Trade Certificate · Age 18–23 yrs",
-    lastDate: "2026-09-30",
-    aiSummary: "Technical & Tradesmen posts — Cook, Cobbler, Carpenter, Tailor etc. Written exam + PET/PST + Trade Test + Medical. Physically demanding role.",
-    location: "All India",
-    status: "Open",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: false,
-  },
-  {
-    id: "kvs-teacher-2025",
-    title: "KVS Primary & TGT Teacher Recruitment 2025",
-    organization: "Kendriya Vidyalaya Sangathan",
-    category: "PwD",
-    examType: "Teaching (DSSSB/KVS)",
-    vacancies: 13000,
-    eligibility: "B.Ed / D.El.Ed + CTET · Age 18–35 yrs",
-    lastDate: "2026-08-10",
-    aiSummary: "Primary Teacher (PRT) and Trained Graduate Teacher (TGT) posts across 1200+ Kendriya Vidyalayas. Written test + Interview. All-India posting.",
-    location: "All India",
-    status: "Result Out",
-    notificationUrl: "#",
-    applyUrl: "#",
-    isEligible: true,
-  },
-];
 
 const PAGE_SIZE = 8;
 const SORT_OPTIONS = [
@@ -212,6 +16,25 @@ const SORT_OPTIONS = [
   { value: "eligible", label: "Eligible Jobs First" },
 ];
 
+function mapRow(r: Record<string, unknown>): JobListItem {
+  return {
+    id: String(r.id),
+    title: String(r.title ?? ""),
+    organization: String(r.organization ?? ""),
+    category: String(r.category ?? "General"),
+    examType: String(r.exam_type ?? "UPSC"),
+    vacancies: Number(r.vacancies ?? 0),
+    eligibility: String(r.eligibility ?? ""),
+    lastDate: String(r.last_date ?? new Date().toISOString().slice(0, 10)),
+    aiSummary: String(r.ai_summary ?? ""),
+    location: String(r.location ?? "All India"),
+    status: (r.status as JobListItem["status"]) ?? "Open",
+    notificationUrl: String(r.notification_url ?? "#"),
+    applyUrl: String(r.apply_url ?? "#"),
+    isEligible: false,
+  };
+}
+
 export default function JobsPage() {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<JobFilters>(DEFAULT_FILTERS);
@@ -219,43 +42,47 @@ export default function JobsPage() {
   const [page, setPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  // Filter + sort logic
-  const filteredJobs = useMemo(() => {
-    let jobs = ALL_JOBS.filter((j) => {
-      if (query) {
-        const q = query.toLowerCase();
-        if (
-          !j.title.toLowerCase().includes(q) &&
-          !j.organization.toLowerCase().includes(q) &&
-          !j.examType.toLowerCase().includes(q)
-        )
-          return false;
-      }
-      if (filters.examType.length && !filters.examType.includes(j.examType)) return false;
-      if (filters.qualification.length) {
-        /* simplified: just pass through without real user profile matching */
-      }
-      if (filters.location.length && !filters.location.includes(j.location)) return false;
-      if (filters.status.length && !filters.status.includes(j.status)) return false;
-      if (filters.category.length && !filters.category.includes(j.category)) return false;
-      return true;
-    });
+  const [jobs, setJobs] = useState<JobListItem[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    jobs = [...jobs].sort((a, b) => {
-      if (sort === "deadline") return new Date(a.lastDate).getTime() - new Date(b.lastDate).getTime();
-      if (sort === "vacancies") return b.vacancies - a.vacancies;
-      if (sort === "eligible") return (b.isEligible ? 1 : 0) - (a.isEligible ? 1 : 0);
-      return 0; // latest: keep original order
-    });
+  const fetchJobs = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const params = new URLSearchParams();
+      if (query) params.set("q", query);
+      if (filters.examType.length) params.set("examType", filters.examType[0]);
+      if (filters.location.length) params.set("location", filters.location[0]);
+      if (filters.status.length) params.set("status", filters.status[0]);
+      if (filters.category.length) params.set("category", filters.category[0]);
+      params.set("sort", sort);
+      params.set("page", String(page));
 
-    return jobs;
-  }, [query, filters, sort]);
+      const res = await fetch(`/api/jobs?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch jobs");
+      const data = await res.json();
+      setJobs((data.jobs ?? []).map(mapRow));
+      setTotal(data.total ?? 0);
+      setTotalPages(data.totalPages ?? 1);
+    } catch (e) {
+      setError("Could not load jobs. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, [query, filters, sort, page]);
 
-  const totalPages = Math.ceil(filteredJobs.length / PAGE_SIZE);
-  const paginatedJobs = filteredJobs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  useEffect(() => { fetchJobs(); }, [fetchJobs]);
 
   const handleFilterChange = (f: JobFilters) => { setFilters(f); setPage(1); };
   const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); };
+
+  const displayJobs = useMemo(() => {
+    if (sort !== "eligible") return jobs;
+    return [...jobs].sort((a, b) => (b.isEligible ? 1 : 0) - (a.isEligible ? 1 : 0));
+  }, [jobs, sort]);
 
   return (
     <>
@@ -266,7 +93,7 @@ export default function JobsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">Government Jobs 2025–26</h1>
           <p className="text-sm text-gray-500">
-            {filteredJobs.length.toLocaleString("en-IN")} jobs found · Updated 3 hours ago
+            {loading ? "Loading…" : `${total.toLocaleString("en-IN")} jobs found · Employment News 23–29 May 2026`}
           </p>
 
           {/* Search bar */}
@@ -289,7 +116,6 @@ export default function JobsPage() {
             >
               Search
             </button>
-            {/* Mobile filter toggle */}
             <button
               type="button"
               onClick={() => setMobileFiltersOpen(true)}
@@ -308,19 +134,24 @@ export default function JobsPage() {
 
           {/* Sidebar — desktop */}
           <div className="hidden md:block">
-            <JobsFilterSidebar filters={filters} onChange={handleFilterChange} totalResults={filteredJobs.length} />
+            <JobsFilterSidebar filters={filters} onChange={handleFilterChange} totalResults={total} />
           </div>
 
           {/* Main content */}
           <div className="flex-1 min-w-0">
-            {/* Active filter pills */}
             <ActiveFilterPills filters={filters} onChange={handleFilterChange} />
 
             {/* Sort + results bar */}
             <div className="flex items-center justify-between gap-3 mb-4">
               <p className="text-sm text-gray-500">
-                Showing <span className="font-semibold text-gray-800">{(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filteredJobs.length)}</span> of{" "}
-                <span className="font-semibold text-gray-800">{filteredJobs.length}</span> jobs
+                {loading ? (
+                  "Loading…"
+                ) : (
+                  <>
+                    Showing <span className="font-semibold text-gray-800">{(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)}</span> of{" "}
+                    <span className="font-semibold text-gray-800">{total}</span> jobs
+                  </>
+                )}
               </p>
               <div className="flex items-center gap-2">
                 <label className="text-xs text-gray-500 shrink-0">Sort by:</label>
@@ -358,23 +189,49 @@ export default function JobsPage() {
               </button>
             </div>
 
+            {/* Error */}
+            {error && (
+              <div className="text-center py-10 bg-red-50 border border-red-100 rounded-2xl mb-4">
+                <p className="text-sm text-red-600">{error}</p>
+                <button onClick={fetchJobs} className="mt-2 text-xs text-red-500 underline">Retry</button>
+              </div>
+            )}
+
+            {/* Loading skeleton */}
+            {loading && !error && (
+              <div className="space-y-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="bg-white rounded-2xl border border-gray-200 p-5 animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded w-1/3 mb-3" />
+                    <div className="h-5 bg-gray-200 rounded w-2/3 mb-2" />
+                    <div className="h-3 bg-gray-100 rounded w-full" />
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Job list */}
-            {paginatedJobs.length === 0 ? (
+            {!loading && !error && displayJobs.length === 0 && (
               <div className="text-center py-24 bg-white rounded-2xl border border-gray-200">
                 <div className="text-5xl mb-4">🔍</div>
                 <h3 className="text-lg font-bold text-gray-800 mb-1">No jobs found</h3>
                 <p className="text-sm text-gray-400">Try adjusting your filters or search query.</p>
               </div>
-            ) : (
+            )}
+
+            {!loading && !error && displayJobs.length > 0 && (
               <div className="space-y-4">
-                {paginatedJobs.map((job) => (
+                {displayJobs.map((job) => (
                   <JobListCard key={job.id} job={job} />
                 ))}
               </div>
             )}
 
-            {/* Pagination */}
-            <Pagination page={page} totalPages={totalPages} onChange={(p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onChange={(p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            />
           </div>
         </div>
       </div>
@@ -393,7 +250,7 @@ export default function JobsPage() {
               </button>
             </div>
             <div className="p-4">
-              <JobsFilterSidebar filters={filters} onChange={(f) => { handleFilterChange(f); setMobileFiltersOpen(false); }} totalResults={filteredJobs.length} />
+              <JobsFilterSidebar filters={filters} onChange={(f) => { handleFilterChange(f); setMobileFiltersOpen(false); }} totalResults={total} />
             </div>
           </div>
         </div>
