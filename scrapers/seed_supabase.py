@@ -110,12 +110,32 @@ def parse_deadline(deadline_str: "Optional[str]") -> "Optional[str]":
     return s
 
 
+def extract_url(notes: str) -> "Optional[str]":
+    urls = re.findall(r'https?://[^\s,)\]]+', notes or "")
+    # Prefer .gov.in or .ac.in or .org.in links
+    for u in urls:
+        if any(x in u for x in [".gov.in", ".ac.in", ".org.in", ".nic.in"]):
+            return u.rstrip(".")
+    return urls[0].rstrip(".") if urls else None
+
+
+def search_url(title: str, org: str) -> str:
+    import urllib.parse
+    query = urllib.parse.quote_plus(f"{title} {org} apply online official")
+    return f"https://www.google.com/search?q={query}"
+
+
 def transform(raw: dict, idx: int) -> dict:
     title = raw.get("job_title") or "Untitled"
     org = raw.get("organization") or ""
+    notes = raw.get("notes") or ""
     slug = slugify(title) + f"-{idx}"
     deadline_raw = raw.get("application_deadline")
     deadline = parse_deadline(deadline_raw)
+
+    extracted_url = extract_url(notes)
+    apply_url = extracted_url or search_url(title, org)
+    notification_url = extracted_url or "https://www.employmentnews.gov.in"
 
     return {
         "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, slug)),
@@ -126,11 +146,11 @@ def transform(raw: dict, idx: int) -> dict:
         "vacancies": raw.get("vacancies"),
         "eligibility": (raw.get("qualification") or "")[:500],
         "last_date": deadline,
-        "ai_summary": (raw.get("notes") or raw.get("qualification") or "")[:600],
+        "ai_summary": (notes or raw.get("qualification") or "")[:600],
         "location": (raw.get("location") or "All India")[:255],
         "status": infer_status(deadline_raw),
-        "notification_url": "https://www.employmentnews.gov.in",
-        "apply_url": "https://www.employmentnews.gov.in",
+        "notification_url": notification_url,
+        "apply_url": apply_url,
         "age_limit": (raw.get("age_limit") or "")[:100],
         "source": "Employment News 23-29 May 2026",
     }
