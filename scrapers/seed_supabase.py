@@ -4,11 +4,14 @@ Run: python scrapers/seed_supabase.py
 Requires: pip install supabase
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re
 import uuid
 from pathlib import Path
+from typing import Optional
 from supabase import create_client
 
 SUPABASE_URL = os.environ.get("NEXT_PUBLIC_SUPABASE_URL", "https://impjnmmwjrvhlrrtkomh.supabase.co")
@@ -47,7 +50,7 @@ def infer_exam_type(title: str, org: str) -> str:
     return "UPSC"
 
 
-def infer_status(deadline_str: str | None) -> str:
+def infer_status(deadline_str: "Optional[str]") -> str:
     if not deadline_str:
         return "Open"
     from datetime import datetime
@@ -84,7 +87,7 @@ def slugify(text: str) -> str:
     return s[:80]
 
 
-def parse_deadline(deadline_str: str | None) -> str | None:
+def parse_deadline(deadline_str: "Optional[str]") -> "Optional[str]":
     if not deadline_str:
         return None
     months = {
