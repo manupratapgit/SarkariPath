@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export interface JobCardData {
   id: string;
   title: string;
@@ -98,21 +96,23 @@ export default function JobCard({
       {/* Footer actions */}
       <div className="px-5 py-3 border-t border-gray-100 flex items-center gap-2">
         <a
-          href={notificationUrl}
+          href={notificationUrl && notificationUrl !== "#" ? notificationUrl : "https://www.employmentnews.gov.in"}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 text-center text-xs font-semibold py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Notification
         </a>
-        <Link
+        <a
           href={`/jobs/${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex-1 text-center text-xs font-semibold py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Details
-        </Link>
+        </a>
         <a
-          href={applyUrl}
+          href={applyUrl && applyUrl !== "#" ? applyUrl : `https://www.google.com/search?q=${encodeURIComponent(title + " " + organization + " apply online official")}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"

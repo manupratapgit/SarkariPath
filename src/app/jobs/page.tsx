@@ -8,7 +8,7 @@ import ActiveFilterPills from "@/components/jobs/ActiveFilterPills";
 import JobListCard, { type JobListItem } from "@/components/jobs/JobListCard";
 import Pagination from "@/components/jobs/Pagination";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 100;
 const SORT_OPTIONS = [
   { value: "latest", label: "Latest First" },
   { value: "deadline", label: "Deadline (Soonest)" },
@@ -60,6 +60,7 @@ export default function JobsPage() {
       if (filters.category.length) params.set("category", filters.category[0]);
       params.set("sort", sort);
       params.set("page", String(page));
+      params.set("pageSize", String(PAGE_SIZE));
 
       const res = await fetch(`/api/jobs?${params}`);
       if (!res.ok) throw new Error("Failed to fetch jobs");
@@ -148,7 +149,7 @@ export default function JobsPage() {
                   "Loading…"
                 ) : (
                   <>
-                    Showing <span className="font-semibold text-gray-800">{(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)}</span> of{" "}
+                    Showing <span className="font-semibold text-gray-800">{Math.min(jobs.length, total)}</span> of{" "}
                     <span className="font-semibold text-gray-800">{total}</span> jobs
                   </>
                 )}

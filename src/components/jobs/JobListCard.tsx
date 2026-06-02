@@ -148,20 +148,21 @@ export default function JobListCard({ job }: { job: JobListItem }) {
         <div className="flex-1" />
 
         <a
-          href={job.notificationUrl}
+          href={job.notificationUrl && job.notificationUrl !== "#" ? job.notificationUrl : "https://www.employmentnews.gov.in"}
           target="_blank" rel="noopener noreferrer"
           className="text-xs font-semibold px-3 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Notification
         </a>
-        <Link
+        <a
           href={`/jobs/${job.id}`}
+          target="_blank" rel="noopener noreferrer"
           className="text-xs font-semibold px-3 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Details
-        </Link>
+        </a>
         <a
-          href={job.applyUrl}
+          href={job.applyUrl && job.applyUrl !== "#" ? job.applyUrl : `https://www.google.com/search?q=${encodeURIComponent(job.title + " " + job.organization + " apply online")}`}
           target="_blank" rel="noopener noreferrer"
           className="text-xs font-semibold px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors shadow-sm"
         >
