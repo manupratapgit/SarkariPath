@@ -1,6 +1,6 @@
 """
 Seed script — reads employment_news.json and upserts all jobs into Supabase.
-Run: python scrapers/seed_supabase.py
+Run: python3 scrapers/seed_supabase.py
 Requires: pip install supabase
 """
 
@@ -10,6 +10,7 @@ import json
 import os
 import re
 import uuid
+import urllib.parse
 from pathlib import Path
 from typing import Optional
 from supabase import create_client
@@ -35,10 +36,41 @@ EXAM_TYPE_MAP = {
     "icar": "Research",
 }
 
-STATUS_MAP = {
-    "closing soon": "Closing Soon",
-    "result out": "Result Out",
-    "admit card": "Admit Card Out",
+# Known org → official recruitment/careers URL
+ORG_URL_MAP = {
+    "upsc": "https://upsconline.nic.in",
+    "union public service commission": "https://upsconline.nic.in",
+    "ssc": "https://ssc.nic.in",
+    "staff selection commission": "https://ssc.nic.in",
+    "rrb": "https://indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,1,304,366,533",
+    "railway recruitment": "https://www.rrbapply.gov.in",
+    "coal india": "https://www.coalindia.in/en-us/career/recruitment.aspx",
+    "nhpc": "https://www.nhpcindia.com/career.aspx",
+    "ntpc": "https://www.ntpc.co.in/en/careers",
+    "icar": "https://icar.org.in/content/vacancies",
+    "iari": "https://www.iari.res.in/index.php?option=com_content&view=article&id=245",
+    "drdo": "https://www.drdo.gov.in/careers",
+    "aiims": "https://www.aiimsexams.ac.in",
+    "tata memorial": "https://tmc.gov.in/index.php/careers",
+    "sbi": "https://bank.sbi/web/careers",
+    "pnb": "https://www.pnbindia.in/recruitment.html",
+    "apeda": "https://apeda.gov.in/apedawebsite/Vacancies/Vacancies.htm",
+    "cisf": "https://cisfrectt.cisf.gov.in",
+    "nhsrc": "https://nhsrcindia.org/career",
+    "nhrc": "https://nhrc.nic.in/jobs-recruitment",
+    "nsic": "https://www.nsic.co.in/Careers.aspx",
+    "iim": "https://www.iimshillong.ac.in/jobs",
+    "igidr": "http://www.igidr.ac.in/careers/",
+    "nsi": "http://nsi.gov.in",
+    "national sugar institute": "http://nsi.gov.in",
+    "ugc": "https://ugcdaecsr.in",
+    "vecc": "https://www.vecc.gov.in/careers.php",
+    "wdra": "https://wdra.gov.in/wdra/recruitment",
+    "odisha state open university": "https://osou.ac.in/recruitments.php",
+    "central university of rajasthan": "https://www.curaj.ac.in/recruitment",
+    "sagarmala": "https://sagarmala.gov.in/careers",
+    "balmer lawrie": "https://www.balmerlawrie.com/careers",
+    "dsiidc": "https://dsiidc.org/recruitment/",
 }
 
 
@@ -50,7 +82,7 @@ def infer_exam_type(title: str, org: str) -> str:
     return "UPSC"
 
 
-def infer_status(deadline_str: "Optional[str]") -> str:
+def infer_status(deadline_str: Optional[str]) -> str:
     if not deadline_str:
         return "Open"
     from datetime import datetime
@@ -62,7 +94,6 @@ def infer_status(deadline_str: "Optional[str]") -> str:
     try:
         d = datetime.fromisoformat(s)
     except Exception:
-        # try "10 June 2026"
         m = re.search(r"(\d{1,2})\s+(\w+)\s+(\d{4})", s)
         if m:
             day, mon, year = int(m.group(1)), months.get(m.group(2)[:3], 1), int(m.group(3))
@@ -87,7 +118,7 @@ def slugify(text: str) -> str:
     return s[:80]
 
 
-def parse_deadline(deadline_str: "Optional[str]") -> "Optional[str]":
+def parse_deadline(deadline_str: Optional[str]) -> Optional[str]:
     if not deadline_str:
         return None
     months = {
@@ -110,18 +141,35 @@ def parse_deadline(deadline_str: "Optional[str]") -> "Optional[str]":
     return s
 
 
-def extract_url(notes: str) -> "Optional[str]":
-    urls = re.findall(r'https?://[^\s,)\]]+', notes or "")
-    # Prefer .gov.in or .ac.in or .org.in links
+def extract_url_from_text(text: str) -> Optional[str]:
+    """Extract best URL from text — prefers gov.in / ac.in / nic.in."""
+    if not text:
+        return None
+    # Full http/https URLs
+    urls = re.findall(r'https?://[^\s,)\]\"\']+', text)
     for u in urls:
-        if any(x in u for x in [".gov.in", ".ac.in", ".org.in", ".nic.in"]):
-            return u.rstrip(".")
-    return urls[0].rstrip(".") if urls else None
+        if any(x in u for x in [".gov.in", ".ac.in", ".nic.in", ".org.in", ".res.in"]):
+            return u.rstrip(".,)")
+    if urls:
+        return urls[0].rstrip(".,)")
+    # Bare domains like www.xyz.gov.in
+    bare = re.findall(r'www\.[a-z0-9\-]+\.[a-z.]{2,10}(?:/[^\s,)]*)?', text)
+    for b in bare:
+        return "https://" + b.rstrip(".,)")
+    return None
 
 
-def search_url(title: str, org: str) -> str:
-    import urllib.parse
-    query = urllib.parse.quote_plus(f"{title} {org} apply online official")
+def org_url(org: str) -> Optional[str]:
+    """Look up known org → official URL."""
+    org_lower = org.lower()
+    for key, url in ORG_URL_MAP.items():
+        if key in org_lower:
+            return url
+    return None
+
+
+def google_search_url(title: str, org: str, kind: str = "apply") -> str:
+    query = urllib.parse.quote_plus(f"{title} {org} {kind} official site")
     return f"https://www.google.com/search?q={query}"
 
 
@@ -129,13 +177,36 @@ def transform(raw: dict, idx: int) -> dict:
     title = raw.get("job_title") or "Untitled"
     org = raw.get("organization") or ""
     notes = raw.get("notes") or ""
+    qualification = raw.get("qualification") or ""
     slug = slugify(title) + f"-{idx}"
     deadline_raw = raw.get("application_deadline")
     deadline = parse_deadline(deadline_raw)
 
-    extracted_url = extract_url(notes)
-    apply_url = extracted_url or search_url(title, org)
-    notification_url = extracted_url or "https://www.employmentnews.gov.in"
+    # Extract URLs from notes + qualification combined
+    combined_text = notes + " " + qualification
+    extracted_url = extract_url_from_text(combined_text)
+    known_org_url = org_url(org)
+
+    # notification_url: extracted > known org > employmentnews fallback
+    notification_url = extracted_url or known_org_url or "https://www.employmentnews.gov.in"
+
+    # apply_url: for UPSC posts always upsconline; extracted > known org > google search
+    is_upsc = "upsc" in (title + org).lower()
+    if is_upsc:
+        apply_url = "https://upsconline.nic.in"
+    else:
+        apply_url = extracted_url or known_org_url or google_search_url(title, org, "apply online")
+
+    # Full details text for the details page
+    details = json.dumps({
+        "qualification": raw.get("qualification"),
+        "age_limit": raw.get("age_limit"),
+        "application_deadline": raw.get("application_deadline"),
+        "location": raw.get("location"),
+        "notes": notes,
+        "vacancies": raw.get("vacancies"),
+        "source": "Employment News 23-29 May 2026",
+    }, ensure_ascii=False)
 
     return {
         "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, slug)),
@@ -144,22 +215,22 @@ def transform(raw: dict, idx: int) -> dict:
         "category": "General",
         "exam_type": infer_exam_type(title, org),
         "vacancies": raw.get("vacancies"),
-        "eligibility": (raw.get("qualification") or "")[:500],
+        "eligibility": qualification[:500],
         "last_date": deadline,
-        "ai_summary": (notes or raw.get("qualification") or "")[:600],
+        "ai_summary": (notes or qualification)[:600],
         "location": (raw.get("location") or "All India")[:255],
         "status": infer_status(deadline_raw),
         "notification_url": notification_url,
         "apply_url": apply_url,
         "age_limit": (raw.get("age_limit") or "")[:100],
         "source": "Employment News 23-29 May 2026",
+        "details": details,
     }
 
 
 def main():
     data = json.loads(DATA_FILE.read_text())
     raw_jobs = data["jobs"]
-
     records = [transform(j, i) for i, j in enumerate(raw_jobs)]
 
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -169,7 +240,7 @@ def main():
     print(f"Done. Rows affected: {len(result.data)}")
 
     for r in records[:5]:
-        print(f"  • {r['title'][:60]} | {r['status']} | {r['last_date']}")
+        print(f"  • {r['title'][:55]} | apply: {r['apply_url'][:60]}")
 
 
 if __name__ == "__main__":
