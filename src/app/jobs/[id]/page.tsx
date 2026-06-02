@@ -29,8 +29,9 @@ const STATUS_STYLE: Record<string, string> = {
   "Admit Card Out": "bg-yellow-100 text-yellow-700",
 };
 
-export default async function JobDetailPage({ params }: { params: { id: string } }) {
-  const job = await getJob(params.id);
+export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const job = await getJob(id);
   if (!job) notFound();
 
   let details: JobDetails = {};
@@ -47,13 +48,15 @@ export default async function JobDetailPage({ params }: { params: { id: string }
   const isExpired = daysLeft !== null && daysLeft < 0;
   const isUrgent = daysLeft !== null && daysLeft >= 0 && daysLeft <= 7;
 
-  const notifUrl = job.notification_url && job.notification_url !== "#"
-    ? job.notification_url
-    : "https://www.employmentnews.gov.in";
+  const notifUrl =
+    job.notification_url && job.notification_url !== "#"
+      ? job.notification_url
+      : "https://www.employmentnews.gov.in";
 
-  const applyUrl = job.apply_url && job.apply_url !== "#"
-    ? job.apply_url
-    : `https://www.google.com/search?q=${encodeURIComponent((job.title ?? "") + " " + (job.organization ?? "") + " apply online official")}`;
+  const applyUrl =
+    job.apply_url && job.apply_url !== "#"
+      ? job.apply_url
+      : `https://www.google.com/search?q=${encodeURIComponent((job.title ?? "") + " " + (job.organization ?? "") + " apply online official")}`;
 
   const deadline = details.application_deadline || job.last_date;
   const ageLimit = job.age_limit || details.age_limit;
@@ -68,10 +71,7 @@ export default async function JobDetailPage({ params }: { params: { id: string }
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
 
           {/* Back */}
-          <a
-            href="/jobs"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 mb-6 transition-colors"
-          >
+          <a href="/jobs" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 mb-6 transition-colors">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -94,9 +94,7 @@ export default async function JobDetailPage({ params }: { params: { id: string }
               )}
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 leading-snug mb-2">
-              {job.title}
-            </h1>
+            <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 leading-snug mb-2">{job.title}</h1>
             <p className="text-sm text-gray-500 flex items-center gap-1.5 mb-6">
               <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16" />
@@ -104,24 +102,13 @@ export default async function JobDetailPage({ params }: { params: { id: string }
               {job.organization}
             </p>
 
-            {/* Key stats grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatBox
-                label="Vacancies"
-                value={job.vacancies ? job.vacancies.toLocaleString("en-IN") : "—"}
-                icon="👥"
-              />
+              <StatBox label="Vacancies" value={job.vacancies ? job.vacancies.toLocaleString("en-IN") : "—"} icon="👥" />
               <StatBox label="Location" value={job.location || "—"} icon="📍" />
               <StatBox label="Age Limit" value={ageLimit || "—"} icon="🎂" />
               <StatBox
                 label="Deadline"
-                value={
-                  isExpired
-                    ? "Passed"
-                    : daysLeft !== null
-                    ? `${daysLeft} days left`
-                    : "—"
-                }
+                value={isExpired ? "Passed" : daysLeft !== null ? `${daysLeft} days left` : "—"}
                 icon="📅"
                 highlight={isUrgent}
                 dimmed={isExpired}
@@ -144,16 +131,13 @@ export default async function JobDetailPage({ params }: { params: { id: string }
 
           {/* Full details */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-6">
-            <h2 className="text-base font-bold text-gray-900 mb-5 pb-3 border-b border-gray-100">
-              Recruitment Details
-            </h2>
+            <h2 className="text-base font-bold text-gray-900 mb-5 pb-3 border-b border-gray-100">Recruitment Details</h2>
             <div className="space-y-5">
               <DetailRow label="Eligibility / Qualification" value={qualification} />
               <DetailRow label="Age Limit" value={ageLimit} />
               <DetailRow label="Number of Vacancies" value={job.vacancies ? String(job.vacancies) : undefined} />
               <DetailRow label="Application Deadline" value={deadline} />
               <DetailRow label="Location / Posting" value={job.location} />
-              <DetailRow label="Category" value={job.category !== "General" ? job.category : undefined} />
             </div>
           </div>
 
@@ -167,12 +151,11 @@ export default async function JobDetailPage({ params }: { params: { id: string }
             </div>
           )}
 
-          {/* Deadline warning */}
           {isUrgent && !isExpired && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
               <span className="text-xl">⚠️</span>
               <p className="text-sm font-semibold text-red-700">
-                Only {daysLeft} day{daysLeft === 1 ? "" : "s"} left to apply! Deadline: {deadline}
+                Only {daysLeft} day{daysLeft === 1 ? "" : "s"} left! Deadline: {deadline}
               </p>
             </div>
           )}
@@ -211,9 +194,7 @@ export default async function JobDetailPage({ params }: { params: { id: string }
   );
 }
 
-function StatBox({
-  label, value, icon, highlight, dimmed,
-}: {
+function StatBox({ label, value, icon, highlight, dimmed }: {
   label: string; value: string; icon: string; highlight?: boolean; dimmed?: boolean;
 }) {
   return (
@@ -231,9 +212,7 @@ function DetailRow({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null;
   return (
     <div className="flex flex-col sm:flex-row sm:gap-6">
-      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide sm:w-48 shrink-0 mb-1 sm:mb-0 sm:pt-0.5">
-        {label}
-      </p>
+      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide sm:w-48 shrink-0 mb-1 sm:pt-0.5">{label}</p>
       <p className="text-sm text-gray-800 leading-relaxed flex-1">{value}</p>
     </div>
   );

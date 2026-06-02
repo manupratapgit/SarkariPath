@@ -8,12 +8,16 @@ import ActiveFilterPills from "@/components/jobs/ActiveFilterPills";
 import JobListCard, { type JobListItem } from "@/components/jobs/JobListCard";
 import Pagination from "@/components/jobs/Pagination";
 
-const PAGE_SIZE = 100;
 const SORT_OPTIONS = [
   { value: "latest", label: "Latest First" },
   { value: "deadline", label: "Deadline (Soonest)" },
   { value: "vacancies", label: "Most Vacancies" },
   { value: "eligible", label: "Eligible Jobs First" },
+];
+
+const PAGE_SIZE_OPTIONS = [
+  { value: 20, label: "20 per page" },
+  { value: 50, label: "50 per page" },
 ];
 
 function mapRow(r: Record<string, unknown>): JobListItem {
@@ -40,6 +44,7 @@ export default function JobsPage() {
   const [filters, setFilters] = useState<JobFilters>(DEFAULT_FILTERS);
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const [jobs, setJobs] = useState<JobListItem[]>([]);
@@ -60,7 +65,7 @@ export default function JobsPage() {
       if (filters.category.length) params.set("category", filters.category[0]);
       params.set("sort", sort);
       params.set("page", String(page));
-      params.set("pageSize", String(PAGE_SIZE));
+      params.set("pageSize", String(pageSize));
 
       const res = await fetch(`/api/jobs?${params}`);
       if (!res.ok) throw new Error("Failed to fetch jobs");
@@ -68,22 +73,26 @@ export default function JobsPage() {
       setJobs((data.jobs ?? []).map(mapRow));
       setTotal(data.total ?? 0);
       setTotalPages(data.totalPages ?? 1);
-    } catch (e) {
+    } catch {
       setError("Could not load jobs. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, [query, filters, sort, page]);
+  }, [query, filters, sort, page, pageSize]);
 
   useEffect(() => { fetchJobs(); }, [fetchJobs]);
 
   const handleFilterChange = (f: JobFilters) => { setFilters(f); setPage(1); };
   const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); };
+  const handlePageSizeChange = (size: number) => { setPageSize(size); setPage(1); };
 
   const displayJobs = useMemo(() => {
     if (sort !== "eligible") return jobs;
     return [...jobs].sort((a, b) => (b.isEligible ? 1 : 0) - (a.isEligible ? 1 : 0));
   }, [jobs, sort]);
+
+  const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const end = Math.min(page * pageSize, total);
 
   return (
     <>
@@ -97,7 +106,6 @@ export default function JobsPage() {
             {loading ? "Loading…" : `${total.toLocaleString("en-IN")} jobs found · Employment News 23–29 May 2026`}
           </p>
 
-          {/* Search bar */}
           <form onSubmit={handleSearch} className="mt-5 flex gap-2 max-w-2xl">
             <div className="relative flex-1">
               <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,10 +119,7 @@ export default function JobsPage() {
                 className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-gray-50 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:bg-white transition-colors"
               />
             </div>
-            <button
-              type="submit"
-              className="px-5 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-sm shrink-0"
-            >
+            <button type="submit" className="px-5 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-sm shrink-0">
               Search
             </button>
             <button
@@ -133,29 +138,37 @@ export default function JobsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <div className="flex gap-6 items-start">
 
-          {/* Sidebar — desktop */}
           <div className="hidden md:block">
             <JobsFilterSidebar filters={filters} onChange={handleFilterChange} totalResults={total} />
           </div>
 
-          {/* Main content */}
           <div className="flex-1 min-w-0">
             <ActiveFilterPills filters={filters} onChange={handleFilterChange} />
 
             {/* Sort + results bar */}
-            <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
               <p className="text-sm text-gray-500">
-                {loading ? (
-                  "Loading…"
-                ) : (
+                {loading ? "Loading…" : (
                   <>
-                    Showing <span className="font-semibold text-gray-800">{Math.min(jobs.length, total)}</span> of{" "}
+                    Showing <span className="font-semibold text-gray-800">{start}–{end}</span> of{" "}
                     <span className="font-semibold text-gray-800">{total}</span> jobs
+                    {totalPages > 1 && (
+                      <span className="ml-2 text-gray-400">· Page {page} of {totalPages}</span>
+                    )}
                   </>
                 )}
               </p>
               <div className="flex items-center gap-2">
-                <label className="text-xs text-gray-500 shrink-0">Sort by:</label>
+                <select
+                  value={pageSize}
+                  onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                  className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
+                >
+                  {PAGE_SIZE_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+                <label className="text-xs text-gray-500 shrink-0">Sort:</label>
                 <select
                   value={sort}
                   onChange={(e) => { setSort(e.target.value); setPage(1); }}
@@ -168,7 +181,7 @@ export default function JobsPage() {
               </div>
             </div>
 
-            {/* Eligible-only toggle */}
+            {/* Eligible toggle */}
             <div className="flex items-center gap-2 mb-5 p-3 bg-emerald-50 border border-emerald-100 rounded-xl">
               <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
                 <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -182,15 +195,11 @@ export default function JobsPage() {
                   <a href="/profile" className="underline underline-offset-2">Update profile →</a>
                 </p>
               </div>
-              <button
-                onClick={() => setSort("eligible")}
-                className="shrink-0 text-xs font-semibold px-3 py-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
-              >
+              <button onClick={() => setSort("eligible")} className="shrink-0 text-xs font-semibold px-3 py-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
                 Show eligible first
               </button>
             </div>
 
-            {/* Error */}
             {error && (
               <div className="text-center py-10 bg-red-50 border border-red-100 rounded-2xl mb-4">
                 <p className="text-sm text-red-600">{error}</p>
@@ -198,7 +207,6 @@ export default function JobsPage() {
               </div>
             )}
 
-            {/* Loading skeleton */}
             {loading && !error && (
               <div className="space-y-4">
                 {Array.from({ length: 4 }).map((_, i) => (
@@ -211,7 +219,6 @@ export default function JobsPage() {
               </div>
             )}
 
-            {/* Job list */}
             {!loading && !error && displayJobs.length === 0 && (
               <div className="text-center py-24 bg-white rounded-2xl border border-gray-200">
                 <div className="text-5xl mb-4">🔍</div>
@@ -237,7 +244,6 @@ export default function JobsPage() {
         </div>
       </div>
 
-      {/* Mobile filter drawer */}
       {mobileFiltersOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileFiltersOpen(false)} />

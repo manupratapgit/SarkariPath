@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   const category = searchParams.get("category") || "";
   const sort = searchParams.get("sort") || "latest";
   const page = Math.max(1, Number(searchParams.get("page") || "1"));
-  const pageSize = Math.min(100, Math.max(1, Number(searchParams.get("pageSize") || "100")));
+  const pageSize = Math.min(50, Math.max(1, Number(searchParams.get("pageSize") || "20")));
 
   let query = supabase.from("jobs").select("*", { count: "exact" });
 
