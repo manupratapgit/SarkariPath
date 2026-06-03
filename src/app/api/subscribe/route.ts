@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       : "all government jobs";
 
     await resend.emails.send({
-      from: "SarkariPath <alerts@sarkaripath.com>",
+      from: process.env.RESEND_FROM_EMAIL || "SarkariPath <onboarding@resend.dev>",
       to: email,
       subject: "Welcome to SarkariPath — You're subscribed!",
       html: `

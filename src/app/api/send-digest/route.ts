@@ -88,7 +88,7 @@ export async function POST() {
   for (const sub of subscribers) {
     try {
       await resend.emails.send({
-        from: "SarkariPath <alerts@sarkaripath.com>",
+        from: process.env.RESEND_FROM_EMAIL || "SarkariPath <onboarding@resend.dev>",
         to: sub.email,
         subject: `Weekly Govt Job Digest — ${weekLabel}`,
         html: `
