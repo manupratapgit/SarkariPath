@@ -1,9 +1,9 @@
 """
-SSC scraper — scrapes latest notices from ssc.gov.in,
-downloads linked PDFs, uses Claude API to extract structured job data,
-and upserts into Supabase jobs table with exam_type = "SSC".
+IBPS scraper — scrapes current recruitment notifications from ibps.in,
+uses Claude API to extract structured job data, and upserts into Supabase
+with exam_type = "Banking (IBPS/SBI)".
 
-Run: python3 scrapers/ssc.py
+Run: python3 scrapers/ibps.py
 """
 
 from __future__ import annotations
@@ -22,12 +22,11 @@ import requests
 from bs4 import BeautifulSoup
 from supabase import create_client
 
-BASE_URL = "https://ssc.gov.in"
-NOTICES_URL = "https://ssc.gov.in/portal/latestnotice"
-APPLY_URL = "https://ssc.gov.in"
-SOURCE = "SSC Website"
-EXAM_TYPE = "SSC"
-ORG = "Staff Selection Commission (SSC)"
+BASE_URL = "https://www.ibps.in"
+HOME_URL = "https://www.ibps.in/"
+SOURCE = "IBPS Website"
+EXAM_TYPE = "Banking (IBPS/SBI)"
+ORG = "Institute of Banking Personnel Selection (IBPS)"
 
 SUPABASE_URL = os.environ.get("NEXT_PUBLIC_SUPABASE_URL", "https://impjnmmwjrvhlrrtkomh.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get(
@@ -42,17 +41,17 @@ HEADERS = {
     )
 }
 
-SYSTEM_PROMPT = """You are a structured-data extraction assistant for Indian government job notifications.
-Given text from an SSC (Staff Selection Commission) recruitment notification, extract job data and return
-ONLY a valid JSON array (no markdown, no prose). Each object must have exactly these keys:
+SYSTEM_PROMPT = """You are a structured-data extraction assistant for Indian banking sector job notifications.
+Given text from an IBPS (Institute of Banking Personnel Selection) recruitment notification, extract job data
+and return ONLY a valid JSON array (no markdown, no prose). Each object must have exactly these keys:
   job_title, organization, vacancies, qualification, age_limit,
   application_deadline, exam_date, location, notes
 Rules:
-- organization: "Staff Selection Commission (SSC)" unless clearly different
+- organization: the specific bank or "IBPS" if not specified
 - vacancies: integer or null
 - application_deadline, exam_date: ISO-8601 (YYYY-MM-DD) if possible, else human-readable
-- notes: salary/pay scale, category breakdown (UR/OBC/SC/ST), selection process, URLs
-- One object per distinct post
+- notes: salary/pay scale, category breakdown (UR/OBC/SC/ST/EWS), selection process, URLs
+- One object per distinct post/exam (e.g. PO, Clerk, SO are separate)
 - null for any missing field"""
 
 
@@ -127,10 +126,10 @@ def existing_titles(supabase) -> set[str]:
         return set()
 
 
-def fetch_notices() -> list[dict]:
-    print(f"Fetching: {NOTICES_URL}")
+def fetch_notifications() -> list[dict]:
+    print(f"Fetching: {HOME_URL}")
     try:
-        r = requests.get(NOTICES_URL, headers=HEADERS, timeout=30)
+        r = requests.get(HOME_URL, headers=HEADERS, timeout=30)
         r.raise_for_status()
     except Exception as e:
         print(f"ERROR: {e}")
@@ -140,10 +139,10 @@ def fetch_notices() -> list[dict]:
     items: list[dict] = []
     seen: set[str] = set()
 
-    # SSC uses tables or lists of notices
     job_keywords = [
-        "recruitment", "vacancy", "vacancies", "notification", "advertisement",
-        "cgl", "chsl", "mts", "gd", "cpo", "stenographer", "je", "selection post",
+        "recruitment", "notification", "vacancy", "vacancies", "advertisement",
+        "po", "clerk", "so", "rrb", "crp", "probationary officer",
+        "specialist officer", "office assistant", "apply online",
     ]
 
     for a in soup.find_all("a", href=True):
@@ -154,11 +153,23 @@ def fetch_notices() -> list[dict]:
         if not any(kw in text.lower() for kw in job_keywords) and not href.lower().endswith(".pdf"):
             continue
         full_url = href if href.startswith("http") else BASE_URL.rstrip("/") + "/" + href.lstrip("/")
-        if full_url not in seen:
+        if full_url not in seen and "ibps.in" in full_url:
             seen.add(full_url)
             items.append({"title": text, "url": full_url, "is_pdf": href.lower().endswith(".pdf")})
 
-    print(f"  Found {len(items)} notice links")
+    # Also check the important notices / current openings section
+    for section in soup.find_all(["div", "section", "ul"], class_=re.compile(r"notice|current|opening|news", re.I)):
+        for a in section.find_all("a", href=True):
+            href = a["href"]
+            text = a.get_text(strip=True)
+            if not text or len(text) < 8:
+                continue
+            full_url = href if href.startswith("http") else BASE_URL.rstrip("/") + "/" + href.lstrip("/")
+            if full_url not in seen:
+                seen.add(full_url)
+                items.append({"title": text, "url": full_url, "is_pdf": href.lower().endswith(".pdf")})
+
+    print(f"  Found {len(items)} notification links")
     return items
 
 
@@ -171,6 +182,7 @@ def fetch_text(item: dict) -> str:
         r = requests.get(url, headers=HEADERS, timeout=30)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
+        # Try embedded PDFs first
         for a in soup.find_all("a", href=True):
             if a["href"].lower().endswith(".pdf"):
                 pdf_url = a["href"] if a["href"].startswith("http") else BASE_URL + "/" + a["href"].lstrip("/")
@@ -219,7 +231,7 @@ def transform(raw: dict, idx: int, notification_url: str) -> dict:
     notes = raw.get("notes") or ""
     qualification = raw.get("qualification") or ""
     vacancies = raw.get("vacancies")
-    slug = slugify(title) + f"-ssc-{idx}"
+    slug = slugify(title) + f"-ibps-{idx}"
 
     return {
         "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, slug)),
@@ -235,7 +247,7 @@ def transform(raw: dict, idx: int, notification_url: str) -> dict:
         "location": (raw.get("location") or "All India")[:255],
         "status": infer_status(deadline),
         "notification_url": notification_url,
-        "apply_url": APPLY_URL,
+        "apply_url": HOME_URL,
         "age_limit": (raw.get("age_limit") or "")[:100],
         "source": SOURCE,
         "details": json.dumps({
@@ -254,31 +266,31 @@ def transform(raw: dict, idx: int, notification_url: str) -> dict:
 def main() -> int:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
     known = existing_titles(supabase)
-    print(f"Already in DB: {len(known)} SSC jobs")
+    print(f"Already in DB: {len(known)} Banking jobs")
 
-    notices = fetch_notices()
-    if not notices:
-        print("No notices found.")
+    notifications = fetch_notifications()
+    if not notifications:
+        print("No notifications found.")
         return 0
 
     records: list[dict] = []
     idx = 0
 
-    for notice in notices:
-        print(f"\nProcessing: {notice['title'][:70]}")
+    for notif in notifications:
+        print(f"\nProcessing: {notif['title'][:70]}")
         try:
-            text = fetch_text(notice)
+            text = fetch_text(notif)
             if not text.strip():
                 print("  Skipping — no text")
                 continue
-            jobs = extract_with_claude(notice["title"], text)
+            jobs = extract_with_claude(notif["title"], text)
             print(f"  Extracted {len(jobs)} job(s)")
             for job in jobs:
-                title = (job.get("job_title") or notice["title"])[:255]
+                title = (job.get("job_title") or notif["title"])[:255]
                 if title.strip().lower() in known:
                     print(f"  Skip (exists): {title[:55]}")
                     continue
-                records.append(transform(job, idx, notice["url"]))
+                records.append(transform(job, idx, notif["url"]))
                 known.add(title.strip().lower())
                 idx += 1
             time.sleep(1)
@@ -287,10 +299,10 @@ def main() -> int:
             continue
 
     if not records:
-        print("\nNo new SSC jobs to insert.")
+        print("\nNo new Banking jobs to insert.")
         return 0
 
-    print(f"\nUpserting {len(records)} new SSC job(s)…")
+    print(f"\nUpserting {len(records)} new Banking job(s)…")
     result = supabase.table("jobs").upsert(records).execute()
     added = len(result.data or [])
     print(f"Done. Rows affected: {added}")
