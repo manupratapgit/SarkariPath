@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StatsRow from "@/components/StatsRow";
 import JobsGrid from "@/components/JobsGrid";
-import AlertBanner from "@/components/AlertBanner";
 import FeaturesSection from "@/components/FeaturesSection";
 import NewsletterSection from "@/components/NewsletterSection";
 import Footer from "@/components/Footer";
@@ -17,7 +16,6 @@ export default function Home() {
         <HeroSection />
         <StatsRow />
         <JobsGrid />
-        <AlertBanner />
         <FeaturesSection />
         <NewsletterSection />
       </main>

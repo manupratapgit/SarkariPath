@@ -19,8 +19,9 @@ create index if not exists subscriptions_active_idx on public.subscriptions (is_
 -- Enable Row Level Security
 alter table public.subscriptions enable row level security;
 
--- Service role can do everything (used by API routes with service key)
-create policy "Service role full access" on public.subscriptions
+-- Allow all operations (API routes run server-side with service key or anon key)
+create policy "Allow all server-side operations" on public.subscriptions
   for all
+  to anon, authenticated
   using (true)
   with check (true);
