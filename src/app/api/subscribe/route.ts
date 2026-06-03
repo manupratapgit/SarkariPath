@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
   if (insertError) {
     console.error("Supabase insert error:", insertError);
-    return NextResponse.json({ error: "Failed to save subscription" }, { status: 500 });
+    return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
 
   // Send welcome email
