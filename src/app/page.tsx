@@ -1,3 +1,5 @@
+export const revalidate = 3600; // revalidate every hour
+
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StatsRow from "@/components/StatsRow";
