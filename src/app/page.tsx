@@ -4,6 +4,7 @@ import StatsRow from "@/components/StatsRow";
 import JobsGrid from "@/components/JobsGrid";
 import AlertBanner from "@/components/AlertBanner";
 import FeaturesSection from "@/components/FeaturesSection";
+import NewsletterSection from "@/components/NewsletterSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <JobsGrid />
         <AlertBanner />
         <FeaturesSection />
+        <NewsletterSection />
       </main>
       <Footer />
     </>
