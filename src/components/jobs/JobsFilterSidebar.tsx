@@ -32,9 +32,10 @@ interface Props {
   filters: JobFilters;
   onChange: (f: JobFilters) => void;
   totalResults: number;
+  counts?: { examType: Record<string, number>; status: Record<string, number> };
 }
 
-export default function JobsFilterSidebar({ filters, onChange, totalResults }: Props) {
+export default function JobsFilterSidebar({ filters, onChange, totalResults, counts }: Props) {
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
   const toggle = (key: string) => setCollapsed((p) => ({ ...p, [key]: !p[key] }));
@@ -80,7 +81,7 @@ export default function JobsFilterSidebar({ filters, onChange, totalResults }: P
             onToggle={() => toggle("examType")}
           >
             {EXAM_TYPES.map((v) => (
-              <CheckItem key={v} label={v} checked={filters.examType.includes(v)} onChange={() => toggleArr("examType", v)} />
+              <CheckItem key={v} label={v} count={counts?.examType[v]} checked={filters.examType.includes(v)} onChange={() => toggleArr("examType", v)} />
             ))}
           </FilterGroup>
 
@@ -154,7 +155,7 @@ export default function JobsFilterSidebar({ filters, onChange, totalResults }: P
             onToggle={() => toggle("status")}
           >
             {STATUSES.map((v) => (
-              <CheckItem key={v} label={v} checked={filters.status.includes(v)} onChange={() => toggleArr("status", v)} />
+              <CheckItem key={v} label={v} count={counts?.status[v]} checked={filters.status.includes(v)} onChange={() => toggleArr("status", v)} />
             ))}
           </FilterGroup>
 
@@ -204,7 +205,7 @@ function FilterGroup({
   );
 }
 
-function CheckItem({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
+function CheckItem({ label, count, checked, onChange }: { label: string; count?: number; checked: boolean; onChange: () => void }) {
   return (
     <label className="flex items-center gap-2.5 cursor-pointer group">
       <div
@@ -219,7 +220,10 @@ function CheckItem({ label, checked, onChange }: { label: string; checked: boole
           </svg>
         )}
       </div>
-      <span className="text-sm text-gray-600 group-hover:text-gray-900">{label}</span>
+      <span className="text-sm text-gray-600 group-hover:text-gray-900 flex-1">{label}</span>
+      {count !== undefined && count > 0 && (
+        <span className="text-[11px] text-gray-400 font-medium">{count}</span>
+      )}
     </label>
   );
 }

@@ -53,6 +53,7 @@ export default function JobsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [filterCounts, setFilterCounts] = useState<{ examType: Record<string, number>; status: Record<string, number> }>({ examType: {}, status: {} });
 
   const fetchJobs = useCallback(async () => {
     setLoading(true);
@@ -82,6 +83,10 @@ export default function JobsPage() {
   }, [query, filters, sort, page, pageSize]);
 
   useEffect(() => { fetchJobs(); }, [fetchJobs]);
+
+  useEffect(() => {
+    fetch("/api/jobs/counts").then((r) => r.json()).then(setFilterCounts).catch(() => {});
+  }, []);
 
   const handleFilterChange = (f: JobFilters) => { setFilters(f); setPage(1); };
   const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); };
@@ -140,7 +145,7 @@ export default function JobsPage() {
         <div className="flex gap-6 items-start">
 
           <div className="hidden md:block">
-            <JobsFilterSidebar filters={filters} onChange={handleFilterChange} totalResults={total} />
+            <JobsFilterSidebar filters={filters} onChange={handleFilterChange} totalResults={total} counts={filterCounts} />
           </div>
 
           <div className="flex-1 min-w-0">
@@ -258,7 +263,7 @@ export default function JobsPage() {
               </button>
             </div>
             <div className="p-4">
-              <JobsFilterSidebar filters={filters} onChange={(f) => { handleFilterChange(f); setMobileFiltersOpen(false); }} totalResults={total} />
+              <JobsFilterSidebar filters={filters} onChange={(f) => { handleFilterChange(f); setMobileFiltersOpen(false); }} totalResults={total} counts={filterCounts} />
             </div>
           </div>
         </div>
