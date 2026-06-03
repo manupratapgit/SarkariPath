@@ -5,9 +5,22 @@ import "./globals.css";
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SarkariPath — India's #1 Government Job Portal",
+  title: "SarkariPath — One Portal to track all govt. jobs, set alerts",
   description:
-    "Discover the latest Sarkari jobs from UPSC, SSC, Railways, Banking and more. AI-powered summaries, official sources, and application tracker.",
+    "One Portal to track all govt. jobs, set alerts. AI-powered summaries of every government job notification — UPSC, SSC, Railways, Banking & more. Never miss a deadline again.",
+  openGraph: {
+    title: "SarkariPath — One Portal to track all govt. jobs, set alerts",
+    description:
+      "One Portal to track all govt. jobs, set alerts. AI-powered summaries of every government job notification — UPSC, SSC, Railways, Banking & more.",
+    type: "website",
+    siteName: "SarkariPath",
+  },
+  twitter: {
+    card: "summary",
+    title: "SarkariPath — One Portal to track all govt. jobs, set alerts",
+    description:
+      "One Portal to track all govt. jobs, set alerts. AI-powered summaries of every government job notification — UPSC, SSC, Railways, Banking & more.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

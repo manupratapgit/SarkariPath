@@ -39,7 +39,7 @@ export default function HeroSection() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
           <span className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
-          Updated every 6 hours from official sources
+          Updated every week from official sources
         </div>
 
         {/* Headline */}
