@@ -1,0 +1,23 @@
+name: Newsletter Daily Digest
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 6:00 AM UTC daily (11:30 AM IST)
+  workflow_dispatch:
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send newsletter digest
+        run: |
+          curl -s -o response.json -w "%{http_code}" \
+            -X POST "${{ secrets.NEXT_PUBLIC_APP_URL }}/api/send-digest" \
+            -H "Content-Type: application/json" \
+            > http_code.txt
+          HTTP_CODE=$(cat http_code.txt)
+          cat response.json
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "Request failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
