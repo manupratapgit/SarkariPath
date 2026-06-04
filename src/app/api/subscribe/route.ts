@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function createTransporter() {
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    },
+  });
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -36,7 +44,6 @@ export async function POST(req: NextRequest) {
     if (existing.is_active) {
       return NextResponse.json({ status: "already_subscribed" });
     }
-    // Re-activate
     await supabase
       .from("subscriptions")
       .update({ is_active: true, name: name || null, preferences, subscribed_at: new Date().toISOString() })
@@ -59,12 +66,10 @@ export async function POST(req: NextRequest) {
 
   // Send welcome email
   try {
-    const prefList = preferences.length
-      ? preferences.join(", ")
-      : "all government jobs";
-
-    await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || "SarkariPath <onboarding@resend.dev>",
+    const prefList = preferences.length ? preferences.join(", ") : "all government jobs";
+    const transporter = createTransporter();
+    await transporter.sendMail({
+      from: `SarkariPath <${process.env.GMAIL_USER}>`,
       to: email,
       subject: "Welcome to SarkariPath — You're subscribed!",
       html: `
@@ -84,7 +89,7 @@ export async function POST(req: NextRequest) {
               <p style="color:#6b7280;line-height:1.6;margin:0 0 28px;">
                 We send every week with the latest government job notifications — deadlines, vacancies, and direct links to apply.
               </p>
-              <a href="https://sarkaripath.com/jobs" style="display:inline-block;background:#f97316;color:#fff;font-weight:700;font-size:14px;padding:12px 28px;border-radius:10px;text-decoration:none;">
+              <a href="https://sarkari-path.vercel.app/jobs" style="display:inline-block;background:#f97316;color:#fff;font-weight:700;font-size:14px;padding:12px 28px;border-radius:10px;text-decoration:none;">
                 Browse Jobs Now →
               </a>
             </div>
@@ -100,8 +105,7 @@ export async function POST(req: NextRequest) {
       `,
     });
   } catch (emailErr) {
-    // Don't fail the subscription if email sending fails
-    console.error("Resend error:", emailErr);
+    console.error("Gmail send error:", emailErr);
   }
 
   return NextResponse.json({ status: "subscribed" });

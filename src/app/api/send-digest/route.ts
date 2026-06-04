@@ -1,13 +1,21 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function createTransporter() {
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    },
+  });
+}
 
 function formatDeadline(dateStr: string | null): string {
   if (!dateStr) return "See notification";
@@ -39,7 +47,7 @@ function jobRow(job: {
         </div>
       </td>
       <td style="padding:16px 0 16px 16px;border-bottom:1px solid #f3f4f6;vertical-align:middle;white-space:nowrap;">
-        <a href="https://sarkaripath.com/jobs/${job.id}" style="display:inline-block;background:#f97316;color:#fff;font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;text-decoration:none;">
+        <a href="https://sarkari-path.vercel.app/jobs/${job.id}" style="display:inline-block;background:#f97316;color:#fff;font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;text-decoration:none;">
           View →
         </a>
       </td>
@@ -48,7 +56,6 @@ function jobRow(job: {
 }
 
 export async function POST() {
-  // Fetch active subscribers
   const { data: subscribers, error: subError } = await supabase
     .from("subscriptions")
     .select("email, name, preferences")
@@ -62,7 +69,6 @@ export async function POST() {
     return NextResponse.json({ sent: 0, message: "No active subscribers" });
   }
 
-  // Fetch latest 10 jobs from last 7 days
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
   const { data: jobs, error: jobsError } = await supabase
     .from("jobs")
@@ -81,14 +87,15 @@ export async function POST() {
 
   const jobsHtml = jobs.map(jobRow).join("");
   const weekLabel = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+  const transporter = createTransporter();
 
   let sent = 0;
   let failed = 0;
 
   for (const sub of subscribers) {
     try {
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || "SarkariPath <onboarding@resend.dev>",
+      await transporter.sendMail({
+        from: `SarkariPath <${process.env.GMAIL_USER}>`,
         to: sub.email,
         subject: `Weekly Govt Job Digest — ${weekLabel}`,
         html: `
@@ -105,19 +112,17 @@ export async function POST() {
                   Hi ${sub.name || "there"}, here are the latest government job notifications added this week:
                 </p>
                 <table style="width:100%;border-collapse:collapse;">
-                  <tbody>
-                    ${jobsHtml}
-                  </tbody>
+                  <tbody>${jobsHtml}</tbody>
                 </table>
                 <div style="margin-top:28px;text-align:center;">
-                  <a href="https://sarkaripath.com/jobs" style="display:inline-block;background:#f97316;color:#fff;font-weight:700;font-size:14px;padding:14px 32px;border-radius:10px;text-decoration:none;">
+                  <a href="https://sarkari-path.vercel.app/jobs" style="display:inline-block;background:#f97316;color:#fff;font-weight:700;font-size:14px;padding:14px 32px;border-radius:10px;text-decoration:none;">
                     See All Jobs on SarkariPath →
                   </a>
                 </div>
               </div>
               <div style="padding:20px 40px;border-top:1px solid #f3f4f6;background:#f9fafb;">
                 <p style="margin:0;color:#9ca3af;font-size:12px;text-align:center;">
-                  You're receiving this because you subscribed at sarkaripath.com.<br>
+                  You're receiving this because you subscribed at sarkari-path.vercel.app.<br>
                   Reply "unsubscribe" to stop receiving these emails.
                 </p>
               </div>
