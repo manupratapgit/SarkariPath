@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase-browser";
 
 export interface JobListItem {
   id: string;
@@ -29,8 +30,52 @@ const STATUS_STYLE: Record<JobListItem["status"], string> = {
 };
 
 export default function JobListCard({ job }: { job: JobListItem }) {
+  const supabase = createClient();
   const [saved, setSaved] = useState(false);
-  const [tracked, setTracked] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [trackId, setTrackId] = useState<string | null>(null);
+
+  // Check if already saved on mount
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      supabase
+        .from("tracked_jobs")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("job_id", job.id)
+        .single()
+        .then(({ data }) => {
+          if (data) { setSaved(true); setTrackId(data.id); }
+        });
+    });
+  }, [job.id]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+    if (saved && trackId) {
+      await supabase.from("tracked_jobs").delete().eq("id", trackId);
+      setSaved(false);
+      setTrackId(null);
+    } else {
+      const { data } = await supabase.from("tracked_jobs").insert({
+        user_id: user.id,
+        job_id: job.id,
+        title: job.title,
+        organization: job.organization,
+        status: "saved",
+        last_date: job.lastDate || null,
+        notes: "",
+      }).select("id").single();
+      if (data) { setSaved(true); setTrackId(data.id); }
+    }
+    setSaving(false);
+  };
 
   const daysLeft = Math.ceil(
     (new Date(job.lastDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
@@ -43,7 +88,6 @@ export default function JobListCard({ job }: { job: JobListItem }) {
         {/* Top row */}
         <div className="flex items-start justify-between gap-4 mb-3">
           <div className="flex-1 min-w-0">
-            {/* Badge row */}
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="text-xs font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
                 {job.examType}
@@ -60,8 +104,6 @@ export default function JobListCard({ job }: { job: JobListItem }) {
                 </span>
               )}
             </div>
-
-            {/* Title */}
             <Link href={`/jobs/${job.id}`} className="group">
               <h2 className="text-base font-bold text-gray-900 leading-snug group-hover:text-orange-600 transition-colors">
                 {job.title}
@@ -79,8 +121,6 @@ export default function JobListCard({ job }: { job: JobListItem }) {
               {job.location}
             </p>
           </div>
-
-          {/* Vacancies */}
           <div className="text-right shrink-0">
             {job.vacanciesDisplay === "See notification" ? (
               <>
@@ -128,22 +168,9 @@ export default function JobListCard({ job }: { job: JobListItem }) {
       {/* Action footer */}
       <div className="px-5 py-3 border-t border-gray-100 flex items-center gap-2 flex-wrap">
         <button
-          onClick={() => setTracked((v) => !v)}
-          className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border transition-colors ${
-            tracked
-              ? "bg-blue-50 border-blue-200 text-blue-700"
-              : "border-gray-200 text-gray-600 hover:bg-gray-50"
-          }`}
-        >
-          <svg className="w-3.5 h-3.5" fill={tracked ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          {tracked ? "Tracking" : "Track"}
-        </button>
-
-        <button
-          onClick={() => setSaved((v) => !v)}
-          className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border transition-colors ${
+          onClick={handleSave}
+          disabled={saving}
+          className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border transition-colors disabled:opacity-50 ${
             saved
               ? "bg-yellow-50 border-yellow-200 text-yellow-700"
               : "border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -152,7 +179,7 @@ export default function JobListCard({ job }: { job: JobListItem }) {
           <svg className="w-3.5 h-3.5" fill={saved ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
           </svg>
-          {saved ? "Saved" : "Save"}
+          {saving ? "…" : saved ? "Saved" : "Save"}
         </button>
 
         <div className="flex-1" />
@@ -166,7 +193,6 @@ export default function JobListCard({ job }: { job: JobListItem }) {
         </a>
         <a
           href={`/jobs/${job.id}`}
-          target="_blank" rel="noopener noreferrer"
           className="text-xs font-semibold px-3 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Details
