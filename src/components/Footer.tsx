@@ -1,8 +1,21 @@
 import Link from "next/link";
 
 const LINKS = {
-  Jobs: ["/jobs/upsc", "/jobs/ssc", "/jobs/railways", "/jobs/banking", "/jobs/defence", "/jobs/teaching"],
-  Resources: ["/results", "/admit-cards", "/syllabus", "/cut-off", "/previous-papers"],
+  Jobs: [
+    "/jobs?examType=UPSC",
+    "/jobs?examType=SSC",
+    "/jobs?examType=Railways+%28RRB%29",
+    "/jobs?examType=Banking+%28IBPS%2FSBI%29",
+    "/jobs?examType=Defence",
+    "/jobs?examType=Teaching",
+  ],
+  Resources: [
+    "/jobs?status=Result+Out",
+    "/jobs?status=Admit+Card+Out",
+    "/jobs?status=Open",
+    "/jobs?status=Open",
+    "/jobs",
+  ],
   Company: ["/about", "/contact", "/privacy", "/terms"],
 };
 

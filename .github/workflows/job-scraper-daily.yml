@@ -1,0 +1,46 @@
+name: Job Scraper Daily (UPSC + IBPS)
+
+on:
+  schedule:
+    - cron: '30 4 * * *'  # 4:30 AM UTC daily (10:00 AM IST)
+  workflow_dispatch:
+
+jobs:
+  scrape-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: scrapers/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scrapers/requirements.txt
+
+      - name: Run UPSC and IBPS scrapers
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3 - <<'EOF'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path("scrapers")))
+          import traceback, time
+
+          for name, mod_name in [("UPSC", "upsc"), ("IBPS", "ibps")]:
+              print(f"\n{'='*50}\n  Running: {name}\n{'='*50}")
+              start = time.time()
+              try:
+                  mod = __import__(mod_name)
+                  added = mod.main()
+                  print(f"\n  ✓ {name}: {added} new job(s) added ({time.time()-start:.0f}s)")
+              except Exception:
+                  print(f"\n  ✗ {name}: FAILED ({time.time()-start:.0f}s)")
+                  traceback.print_exc()
+          EOF
