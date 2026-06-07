@@ -46,6 +46,9 @@ export default function Navbar() {
           {!loading && (
             user ? (
               <div className="flex items-center gap-3">
+                <Link href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors">
+                  Dashboard
+                </Link>
                 <Link
                   href="/profile"
                   className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-orange-500 transition-colors"
@@ -71,7 +74,7 @@ export default function Navbar() {
                   Log in
                 </Link>
                 <Link
-                  href="/login"
+                  href="/signup"
                   className="text-sm font-semibold px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-sm"
                 >
                   Sign up free
@@ -115,13 +118,14 @@ export default function Navbar() {
           <div className="pt-2 flex flex-col gap-2">
             {user ? (
               <>
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block text-center px-3 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg">Dashboard</Link>
                 <Link href="/profile" onClick={() => setMenuOpen(false)} className="block text-center px-3 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg">My Profile</Link>
                 <button onClick={signOut} className="block w-full text-center px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg">Sign out</button>
               </>
             ) : (
               <>
                 <Link href="/login" className="block text-center px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg">Log in</Link>
-                <Link href="/login" className="block text-center px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-lg">Sign up free</Link>
+                <Link href="/signup" className="block text-center px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-lg">Sign up free</Link>
               </>
             )}
           </div>
