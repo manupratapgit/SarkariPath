@@ -108,7 +108,7 @@ export default function JobsPage() {
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">
-            Government Jobs {new Date().getFullYear()}–{String(new Date().getFullYear() + 1).slice(2)}
+            Government Jobs in India
           </h1>
           <p className="text-sm text-gray-500">
             {loading ? "Loading…" : `${total.toLocaleString("en-IN")} jobs found · Updated ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`}
