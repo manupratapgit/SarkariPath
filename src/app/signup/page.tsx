@@ -85,11 +85,24 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    // Get session user, or fall back to userId from signUp response
     const { data: { user } } = await supabase.auth.getUser();
     const uid = user?.id ?? userId;
-    if (uid) {
-      await supabase.from("profiles").upsert({
-        id: uid,
+
+    if (!uid) {
+      // Email confirmation still pending — send to login with notice
+      router.push("/login?notice=confirm");
+      setLoading(false);
+      return;
+    }
+
+    // Save profile via server API (uses service role key, bypasses RLS)
+    const profileRes = await fetch("/api/auth/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: uid,
         full_name: s1.fullName,
         date_of_birth: s2.dob || null,
         gender: s2.gender,
@@ -97,12 +110,24 @@ export default function SignupPage() {
         field_of_study: s2.fieldOfStudy,
         category: s2.category,
         preferred_exams: s2.preferredExams,
-        updated_at: new Date().toISOString(),
-      });
-      router.push("/dashboard");
-    } else {
-      router.push("/login?notice=confirm");
+      }),
+    });
+
+    if (!profileRes.ok) {
+      const { error: e } = await profileRes.json();
+      setError(e ?? "Failed to save profile. Please try again.");
+      setLoading(false);
+      return;
     }
+
+    // Send welcome email (non-blocking)
+    fetch("/api/auth/welcome", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: s1.email, name: s1.fullName }),
+    }).catch(() => {});
+
+    router.push("/dashboard");
     setLoading(false);
   };
 
