@@ -107,9 +107,11 @@ export default function JobsPage() {
       {/* Page header */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">Government Jobs 2025–26</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">
+            Government Jobs {new Date().getFullYear()}–{String(new Date().getFullYear() + 1).slice(2)}
+          </h1>
           <p className="text-sm text-gray-500">
-            {loading ? "Loading…" : `${total.toLocaleString("en-IN")} jobs found · Employment News 23–29 May 2026`}
+            {loading ? "Loading…" : `${total.toLocaleString("en-IN")} jobs found · Updated ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`}
           </p>
 
           <form onSubmit={handleSearch} className="mt-5 flex gap-2 max-w-2xl">
