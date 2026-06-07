@@ -34,6 +34,7 @@ export default function JobListCard({ job }: { job: JobListItem }) {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [trackId, setTrackId] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState("");
 
   // Check if already saved on mount
   useEffect(() => {
@@ -53,26 +54,28 @@ export default function JobListCard({ job }: { job: JobListItem }) {
 
   const handleSave = async () => {
     setSaving(true);
+    setSaveError("");
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       window.location.href = "/login";
       return;
     }
     if (saved && trackId) {
-      await supabase.from("tracked_jobs").delete().eq("id", trackId);
-      setSaved(false);
-      setTrackId(null);
+      const { error } = await supabase.from("tracked_jobs").delete().eq("id", trackId);
+      if (!error) { setSaved(false); setTrackId(null); }
+      else setSaveError(error.message);
     } else {
-      const { data } = await supabase.from("tracked_jobs").insert({
+      const { data, error } = await supabase.from("tracked_jobs").insert({
         user_id: user.id,
         job_id: job.id,
         title: job.title,
         organization: job.organization,
         status: "saved",
-        last_date: job.lastDate || null,
+        last_date: job.lastDate ? new Date(job.lastDate).toISOString() : null,
         notes: "",
       }).select("id").single();
       if (data) { setSaved(true); setTrackId(data.id); }
+      else if (error) setSaveError(error.message);
     }
     setSaving(false);
   };
@@ -181,6 +184,7 @@ export default function JobListCard({ job }: { job: JobListItem }) {
           </svg>
           {saving ? "…" : saved ? "Saved" : "Save"}
         </button>
+        {saveError && <span className="text-xs text-red-500">{saveError}</span>}
 
         <div className="flex-1" />
 
