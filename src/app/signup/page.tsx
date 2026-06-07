@@ -5,26 +5,25 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase-browser";
 
-const INDIAN_STATES = [
-  "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat",
-  "Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh",
-  "Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
-  "Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh",
-  "Uttarakhand","West Bengal","Delhi","Jammu & Kashmir","Ladakh","Other",
-];
-
 const EXAMS = ["UPSC","SSC","Banking","Railways","State PSC","Teaching","Defence","PSU"];
 const QUALIFICATIONS = ["10th Pass","12th Pass","Diploma","Graduation","Post Graduation","PhD"];
 const CATEGORIES = ["General","OBC","SC","ST","EWS"];
+const FIELDS_OF_STUDY = [
+  "Engineering","Arts & Humanities","Commerce","Science","Mathematics",
+  "Agriculture","Law","Medicine & Healthcare","Management & MBA",
+  "Computer Science & IT","Education & Teaching","Social Sciences",
+  "Economics","Political Science","History","Geography","Hindi Literature",
+  "English Literature","Other",
+];
 
 interface Step1Data { fullName: string; email: string; password: string; confirm: string; }
 interface Step2Data {
-  phone: string; dob: string; gender: string; state: string; city: string;
+  dob: string; gender: string;
   qualification: string; fieldOfStudy: string; category: string; preferredExams: string[];
 }
 
 const EMPTY2: Step2Data = {
-  phone: "", dob: "", gender: "", state: "", city: "",
+  dob: "", gender: "",
   qualification: "", fieldOfStudy: "", category: "", preferredExams: [],
 };
 
@@ -65,7 +64,6 @@ export default function SignupPage() {
   const [s1, setS1] = useState<Step1Data>({ fullName: "", email: "", password: "", confirm: "" });
   const [s2, setS2] = useState<Step2Data>(EMPTY2);
 
-  // Step 1: create account
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -83,23 +81,18 @@ export default function SignupPage() {
     setStep(2);
   };
 
-  // Step 2: save profile
   const handleProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    // Try to get current session (may not exist if email confirmation required)
     const { data: { user } } = await supabase.auth.getUser();
     const uid = user?.id ?? userId;
     if (uid) {
       await supabase.from("profiles").upsert({
         id: uid,
         full_name: s1.fullName,
-        phone: s2.phone,
         date_of_birth: s2.dob || null,
         gender: s2.gender,
-        state: s2.state,
-        city: s2.city,
         highest_qualification: s2.qualification,
         field_of_study: s2.fieldOfStudy,
         category: s2.category,
@@ -108,7 +101,6 @@ export default function SignupPage() {
       });
       router.push("/dashboard");
     } else {
-      // No session yet — email confirmation pending
       router.push("/login?notice=confirm");
     }
     setLoading(false);
@@ -174,19 +166,12 @@ export default function SignupPage() {
               <h1 className="text-xl font-bold text-gray-900 mb-1">Complete your profile</h1>
               <p className="text-gray-500 text-sm mb-6">Help us personalise job recommendations for you.</p>
               <form onSubmit={handleProfile} className="space-y-5">
-                {/* Personal */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <InputField label="Phone Number" type="tel" value={s2.phone} onChange={(e) => setS2(p => ({ ...p, phone: e.target.value }))} placeholder="10-digit number" />
                   <InputField label="Date of Birth" type="date" value={s2.dob} onChange={(e) => setS2(p => ({ ...p, dob: e.target.value }))} />
                   <SelectField label="Gender" value={s2.gender} onChange={(e) => setS2(p => ({ ...p, gender: e.target.value }))}>
                     <option value="">Select gender</option>
                     {["Male","Female","Other"].map(g => <option key={g}>{g}</option>)}
                   </SelectField>
-                  <SelectField label="State" value={s2.state} onChange={(e) => setS2(p => ({ ...p, state: e.target.value }))}>
-                    <option value="">Select state</option>
-                    {INDIAN_STATES.map(s => <option key={s}>{s}</option>)}
-                  </SelectField>
-                  <InputField label="City" value={s2.city} onChange={(e) => setS2(p => ({ ...p, city: e.target.value }))} placeholder="Your city" />
                   <SelectField label="Category" value={s2.category} onChange={(e) => setS2(p => ({ ...p, category: e.target.value }))}>
                     <option value="">Select category</option>
                     {CATEGORIES.map(c => <option key={c}>{c}</option>)}
@@ -195,7 +180,12 @@ export default function SignupPage() {
                     <option value="">Select qualification</option>
                     {QUALIFICATIONS.map(q => <option key={q}>{q}</option>)}
                   </SelectField>
-                  <InputField label="Field of Study" value={s2.fieldOfStudy} onChange={(e) => setS2(p => ({ ...p, fieldOfStudy: e.target.value }))} placeholder="e.g. Engineering, Arts" />
+                  <div className="sm:col-span-2">
+                    <SelectField label="Field of Study" value={s2.fieldOfStudy} onChange={(e) => setS2(p => ({ ...p, fieldOfStudy: e.target.value }))}>
+                      <option value="">Select field of study</option>
+                      {FIELDS_OF_STUDY.map(f => <option key={f}>{f}</option>)}
+                    </SelectField>
+                  </div>
                 </div>
 
                 {/* Exam preferences */}
@@ -216,16 +206,10 @@ export default function SignupPage() {
                 </div>
 
                 {error && <p className="text-red-500 text-sm bg-red-50 px-3 py-2 rounded-lg">{error}</p>}
-                <div className="flex gap-3 pt-2">
-                  <button type="button" onClick={() => { router.push("/dashboard"); }}
-                    className="flex-1 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors text-sm">
-                    Skip for now
-                  </button>
-                  <button type="submit" disabled={loading}
-                    className="flex-2 flex-grow py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors disabled:opacity-60">
-                    {loading ? "Saving…" : "Save & Continue →"}
-                  </button>
-                </div>
+                <button type="submit" disabled={loading}
+                  className="w-full py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors disabled:opacity-60">
+                  {loading ? "Saving…" : "Save & Continue →"}
+                </button>
               </form>
             </>
           )}
