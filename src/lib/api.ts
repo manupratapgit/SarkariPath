@@ -46,9 +46,3 @@ export async function fetchJobs(filters: JobFilters = {}): Promise<JobsResponse>
   if (!res.ok) throw new Error(`Failed to fetch jobs: ${res.status}`);
   return res.json();
 }
-
-export async function fetchJobById(id: string): Promise<Job> {
-  const res = await fetch(`${API_BASE}/jobs/${id}`);
-  if (!res.ok) throw new Error(`Job not found: ${id}`);
-  return res.json();
-}
