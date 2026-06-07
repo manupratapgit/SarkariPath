@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useUser } from "@/hooks/useUser";
 
 const NAV_LINKS = [
   { label: "Jobs", href: "/jobs" },
@@ -12,6 +13,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, loading, signOut } = useUser();
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
@@ -41,18 +43,42 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="/login"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="text-sm font-semibold px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-sm"
-          >
-            Sign up free
-          </Link>
+          {!loading && (
+            user ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-orange-500 transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs">
+                    {(user.email ?? "U")[0].toUpperCase()}
+                  </div>
+                  <span className="hidden lg:block">{user.email?.split("@")[0]}</span>
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors"
+                >
+                  Sign out
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Log in
+                </Link>
+                <Link
+                  href="/login"
+                  className="text-sm font-semibold px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-sm"
+                >
+                  Sign up free
+                </Link>
+              </>
+            )
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -87,8 +113,17 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="pt-2 flex flex-col gap-2">
-            <Link href="/login" className="block text-center px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg">Log in</Link>
-            <Link href="/signup" className="block text-center px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-lg">Sign up free</Link>
+            {user ? (
+              <>
+                <Link href="/profile" onClick={() => setMenuOpen(false)} className="block text-center px-3 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg">My Profile</Link>
+                <button onClick={signOut} className="block w-full text-center px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg">Sign out</button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="block text-center px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg">Log in</Link>
+                <Link href="/login" className="block text-center px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-lg">Sign up free</Link>
+              </>
+            )}
           </div>
         </div>
       )}
