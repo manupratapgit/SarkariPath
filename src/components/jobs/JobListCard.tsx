@@ -201,13 +201,19 @@ export default function JobListCard({ job }: { job: JobListItem }) {
         >
           Details
         </a>
-        <a
-          href={job.applyUrl && job.applyUrl !== "#" ? job.applyUrl : `https://www.google.com/search?q=${encodeURIComponent(job.title + " " + job.organization + " apply online")}`}
-          target="_blank" rel="noopener noreferrer"
-          className="text-xs font-semibold px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors shadow-sm"
-        >
-          Apply Now →
-        </a>
+        {job.status === "Result Out" || job.status === "Admit Card Out" ? (
+          <span className="text-xs font-semibold px-4 py-2 rounded-lg bg-gray-100 text-gray-400 cursor-default">
+            Coming Soon
+          </span>
+        ) : (
+          <a
+            href={job.applyUrl && job.applyUrl !== "#" ? job.applyUrl : `https://www.google.com/search?q=${encodeURIComponent(job.title + " " + job.organization + " apply online")}`}
+            target="_blank" rel="noopener noreferrer"
+            className="text-xs font-semibold px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors shadow-sm"
+          >
+            Apply Now →
+          </a>
+        )}
       </div>
     </article>
   );
