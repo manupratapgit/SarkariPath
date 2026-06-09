@@ -1,0 +1,50 @@
+name: Daily Cron Report
+
+on:
+  schedule:
+    - cron: '30 7 * * *'  # 7:30 AM UTC = 1:00 PM IST (after all other crons)
+  workflow_dispatch:
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Collect workflow statuses and send report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        run: |
+          get_status() {
+            local workflow=$1
+            local display=$2
+            local run
+            run=$(gh run list --repo manupratapgit/SarkariPath \
+              --workflow "$workflow" --limit 1 --json conclusion,createdAt,url \
+              --jq '.[0]')
+            local conclusion=$(echo "$run" | jq -r '.conclusion // "skipped"')
+            local created_at=$(echo "$run" | jq -r '.createdAt // ""')
+            local url=$(echo "$run" | jq -r '.url // ""')
+            local run_at=""
+            if [ -n "$created_at" ]; then
+              run_at=$(date -d "$created_at" +"%I:%M %p UTC" 2>/dev/null || echo "$created_at")
+            fi
+            echo "{\"name\":\"$display\",\"status\":\"$conclusion\",\"runAt\":\"$run_at\",\"url\":\"$url\"}"
+          }
+
+          W1=$(get_status "job-scraper-daily.yml" "UPSC + IBPS Daily Scraper")
+          W2=$(get_status "newsletter-digest.yml" "Newsletter Digest")
+          W3=$(get_status "job-scraper.yml" "Weekly Job Scraper")
+
+          PAYLOAD=$(jq -n --argjson w1 "$W1" --argjson w2 "$W2" --argjson w3 "$W3" \
+            '{workflows: [$w1, $w2, $w3]}')
+
+          HTTP_CODE=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST "$APP_URL/api/send-cron-report" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          cat response.json
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "Report send failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
