@@ -37,6 +37,7 @@ function mapRow(r: Record<string, unknown>): JobListItem {
     notificationUrl: String(r.notification_url ?? "#"),
     applyUrl: String(r.apply_url ?? "#"),
     isEligible: false,
+    createdAt: r.created_at ? String(r.created_at) : undefined,
   };
 }
 

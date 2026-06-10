@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase-browser";
+import type React from "react";
 
 export interface JobListItem {
   id: string;
@@ -20,6 +21,7 @@ export interface JobListItem {
   notificationUrl: string;
   applyUrl: string;
   isEligible?: boolean;
+  createdAt?: string;
 }
 
 const STATUS_STYLE: Record<JobListItem["status"], string> = {
@@ -27,6 +29,19 @@ const STATUS_STYLE: Record<JobListItem["status"], string> = {
   "Closing Soon": "bg-red-100 text-red-600",
   "Result Out": "bg-blue-100 text-blue-700",
   "Admit Card Out": "bg-yellow-100 text-yellow-700",
+};
+
+const STATUS_ICON: Partial<Record<JobListItem["status"], React.ReactNode>> = {
+  "Result Out": (
+    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+    </svg>
+  ),
+  "Admit Card Out": (
+    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2" />
+    </svg>
+  ),
 };
 
 export default function JobListCard({ job }: { job: JobListItem }) {
@@ -84,9 +99,13 @@ export default function JobListCard({ job }: { job: JobListItem }) {
     (new Date(job.lastDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
   );
   const isExpired = daysLeft < 0;
+  const isNew = job.createdAt
+    ? (Date.now() - new Date(job.createdAt).getTime()) < 3 * 24 * 60 * 60 * 1000
+    : false;
+  const isStatusAlert = job.status === "Result Out" || job.status === "Admit Card Out";
 
   return (
-    <article className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <article className={`bg-white rounded-2xl border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 ${isStatusAlert ? "border-yellow-300" : "border-gray-200"}`}>
       <div className="p-5">
         {/* Top row */}
         <div className="flex items-start justify-between gap-4 mb-3">
@@ -95,9 +114,19 @@ export default function JobListCard({ job }: { job: JobListItem }) {
               <span className="text-xs font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
                 {job.examType}
               </span>
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_STYLE[job.status]}`}>
+              <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_STYLE[job.status]}`}>
+                {STATUS_ICON[job.status]}
                 {job.status}
               </span>
+              {isNew && (
+                <span className="inline-flex items-center gap-1 text-xs font-bold bg-red-500 text-white px-2 py-0.5 rounded-full shadow-sm">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white" />
+                  </span>
+                  NEW
+                </span>
+              )}
               {job.isEligible && (
                 <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-500 text-white px-2 py-0.5 rounded-full shadow-sm">
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
