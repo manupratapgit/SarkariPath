@@ -157,7 +157,7 @@ def extract_jobs_with_claude(text: str, source_label: str) -> list[dict]:
     print("  Calling Claude API…")
     with client.messages.stream(
         model="claude-opus-4-8",
-        max_tokens=8192,
+        max_tokens=16000,
         thinking={"type": "adaptive"},
         system=system_prompt,
         messages=[{"role": "user", "content": f"Source: {source_label}\n\n{text}"}],
@@ -167,7 +167,15 @@ def extract_jobs_with_claude(text: str, source_label: str) -> list[dict]:
     raw = next((b.text.strip() for b in message.content if b.type == "text"), "[]")
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
     raw = re.sub(r"\s*```$", "", raw)
-    return json.loads(raw)
+
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        last_close = raw.rfind("},")
+        if last_close != -1:
+            raw = raw[: last_close + 1] + "]"
+            return json.loads(raw)
+        raise
 
 
 EXAM_TYPE_MAP = {
