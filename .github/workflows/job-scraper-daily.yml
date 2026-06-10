@@ -35,7 +35,7 @@ jobs:
           sys.path.insert(0, str(Path("scrapers")))
           import traceback, time
 
-          for name, mod_name in [("UPSC", "upsc"), ("IBPS", "ibps"), ("Drive Employment News", "gdrive_employment_news")]:
+          for name, mod_name in [("UPSC", "upsc"), ("IBPS", "ibps"), ("Drive Employment News", "gdrive_employment_news"), ("Local PDFs", "local_pdf_scraper")]:
               print(f"\n{'='*50}\n  Running: {name}\n{'='*50}")
               start = time.time()
               try:
